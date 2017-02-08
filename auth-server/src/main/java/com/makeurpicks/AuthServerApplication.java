@@ -1,15 +1,5 @@
 package com.makeurpicks;
 
-import java.io.IOException;
-
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletResponse;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,13 +28,9 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
-import org.springframework.stereotype.Component;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import com.makeurpicks.domain.Player;
@@ -80,6 +66,59 @@ public class AuthServerApplication extends WebMvcConfigurerAdapter implements Co
 			bean.setOrder(Ordered.HIGHEST_PRECEDENCE);
 			return bean;
 		}
+	
+	/*@Component
+	@Order(Ordered.HIGHEST_PRECEDENCE)
+	public class SimpleCorsFilter implements Filter {
+
+	    public SimpleCorsFilter() {
+	    }
+
+	    @Override
+	    public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
+	        HttpServletResponse response = (HttpServletResponse) res;
+	        HttpServletRequest request = (HttpServletRequest) req;
+//	        String origin = ((RequestFacade) req).getHeader("origin");
+	        response.setHeader("Access-Control-Allow-Origin", "http://localhost:9000");
+//	        response.setHeader("Access-Control-Allow-Origin", "*");
+	         response.setHeader("Access-Control-Allow-Credentials","true");
+	        response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
+	        response.setHeader("Access-Control-Max-Age", "3600");
+	        response.setHeader("Access-Control-Allow-Headers", "X-Requested-With, Content-Type, Authorization");
+
+	        if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
+	            response.setStatus(HttpServletResponse.SC_OK);
+	        } else {
+	            chain.doFilter(req, res);
+	        }
+	    }
+
+	    @Override
+	    public void init(FilterConfig filterConfig) {
+	    }
+
+	    @Override
+	    public void destroy() {
+	    }
+
+	}*/
+	
+	/*@Component
+	public class MyLogoutSuccessHandlerOne implements LogoutSuccessHandler {
+		@Override
+		public void onLogoutSuccess(HttpServletRequest request,
+				HttpServletResponse response, Authentication authentication)
+				throws IOException, ServletException {
+			if(authentication != null) {
+				System.out.println(authentication.getName());
+			}
+			//perform other required operation
+			String URL = request.getContextPath() + "/app";
+			response.setStatus(HttpStatus.OK.value());
+			response.sendRedirect(URL);
+		}
+	} */
+	
 	@Configuration
     @EnableWebSecurity
     @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -87,7 +126,8 @@ public class AuthServerApplication extends WebMvcConfigurerAdapter implements Co
 
 		@Autowired
 	    private PlayerService playerService;
-		
+//		@Autowired
+//		private MyLogoutSuccessHandlerOne myLogoutSuccessHandler;
 		@Autowired
 		public void configure(AuthenticationManagerBuilder auth) throws Exception {
 		    auth
@@ -127,7 +167,11 @@ public class AuthServerApplication extends WebMvcConfigurerAdapter implements Co
 
                     .httpBasic().disable()
                     .anonymous().disable()
+                    .csrf().disable()
                     .authorizeRequests().anyRequest().authenticated();
+//            http.logout().    
+//    		logoutUrl("/auth/logout").
+//    		logoutSuccessHandler(myLogoutSuccessHandler); 
         }
 		@Override
 		public void configure(WebSecurity web) throws Exception {
