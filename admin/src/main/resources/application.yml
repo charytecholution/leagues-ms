@@ -1,5 +1,5 @@
 server:
-  port: 9000
+  port: 9009
   context-path: /admin
 #  tomcat:
 #    remote_ip_header: x-forwarded-for

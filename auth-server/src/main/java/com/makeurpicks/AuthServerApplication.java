@@ -155,8 +155,8 @@ public class AuthServerApplication extends WebMvcConfigurerAdapter implements Co
     	
         @Value("${config.oauth2.admin-uri}")
         private String admin;
-        @Value("${config.oauth2.admin-ssluri}")
-        private String adminssl;
+//        @Value("${config.oauth2.admin-ssluri}")
+//        private String adminssl;
         
         @Value("${config.oauth2.localadmin-uri:http://localhost:9000/admin/}")
         private String localadmin;
@@ -218,7 +218,7 @@ public class AuthServerApplication extends WebMvcConfigurerAdapter implements Co
                     .withClient("confidential").secret("secret")
                     .authorizedGrantTypes("client_credentials", "authorization_code", "refresh_token")
                     .scopes("read", "write")
-                    .redirectUris(admin,localadmin,adminssl).autoApprove(true)
+                    .redirectUris(admin,localadmin).autoApprove(true)
 
                     .and()
                     
