@@ -25,6 +25,10 @@
 		      url: "/seasons",
 		      templateUrl: "createSeasons.html"
 		    })
+		    .state('client', {
+		      url: "/client",
+		      templateUrl: "createClients.html"
+		    })
 		});
 	
 	app.directive('chrome', function() {
@@ -103,7 +107,12 @@
 			templateUrl: 'partials/playersInLeague.html'
 		};
 	});
-	
+	app.directive('createClient', function() {
+		return {
+			restrict: 'E',
+			templateUrl: 'partials/createClient.html'
+		};
+	});
 	
 	app.factory('leagueService', function ($http, $log) {
 	$log.debug('leagueService');
@@ -641,7 +650,83 @@
 //		});
 	})
 	
+	/*************************CLIENT***************************/
 	
+app.controller('CreateClientController', function ($scope, $http, $window, $log, leagueService) {
+		
+		$scope.showclients=true;
+		$scope.client={};
+		$scope.client.name = "";
+		$scope.client.authentication="";
+		$scope.client.authenticationid = "";
+		$scope.client.clientid = "";
+		$scope.client.clientsecret = "";
+		$scope.client.authenticationid = "";
+		//$scope.season.endYear = 2018;
+		
+		/*$http.get('/admin/client').success(function(data) {
+			$scope.client = data;
+			if (data[0] === undefined)
+				$scope.showseasons=false;
+		});*/
+		
+	/*	$http.get('/admin/leagues/types').success(function(data) {
+			if (data[0] )
+				$scope.season.leagueTypes=data;
+		});*/
+		
+		/*this.deleteSeason = function(season) {
+			$log.debug("CreateSeasonController:deleteSeason: season.id="+season.id);
+			
+			if (confirm("Are yoou sure you want to delete season?")) {
+		    
+				var url = '/admin/leagues/seasons/'+season.id;
+				$http({
+					method : "DELETE",
+					url : url,
+					contentType : "application/json",
+					dataType : "json",
+				}).success(function(res) { 
+					
+					$http.get('/admin/leagues/seasons/current').success(function(data) {
+						$scope.seasons = data;
+						if (data[0] === undefined)
+							$scope.showseasons=false;
+					});
+					
+				}).error(function(res) {
+					alert('fail');
+				});
+			
+		 
+		    }
+		}
+		*/
+		this.addClient = function() {
+
+		
+			$log.debug("CreateClientController:createClient");
+		/*	
+			$http({
+				method : "POST",
+				url : '/admin/leagues/seasons/',
+				contentType : "application/json",
+				dataType : "json",
+				data : JSON.stringify($scope.season)
+			}).success(function(res) { 
+				
+//				$scope.showgames = true;
+//				$http.get('/admin/leagues/seasons/current').success(function(data) {
+//					$scope.seasons = data;
+//				});
+				$window.location.href = '/admin/#/leagues';
+				
+			}).error(function(res) {
+				alert('fail');
+			});
+			*/
+		}
+	});
 	
 	
 })();
