@@ -3,6 +3,7 @@ package com.makeurpicks.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,6 +20,8 @@ import com.makeurpicks.exception.PlayerValidationException.PlayerExceptions;
 
 @Service
 public class OAuthClientsService implements ClientDetailsService {
+	
+	//private static Logger _LOGGER=Logger.getLogger(OAuthClientsService.class);
 
 	@Override
 	public ClientDetails loadClientByClientId(String clientId) throws ClientRegistrationException {
@@ -72,5 +75,17 @@ public class OAuthClientsService implements ClientDetailsService {
 		if (!codes.isEmpty())
 			throw new PlayerValidationException(codes.toArray(new PlayerExceptions[codes.size()]));
 	}
+	
+	/**
+	 * This method is used to get all the client details
+	 * @return
+	 * @throws ClientRegistrationException
+	 */
+	public Iterable<OAuthClientDetails> findAllClients() throws ClientRegistrationException {
+		
+		
+		return dao.findAll();
+	}
+
 
 }

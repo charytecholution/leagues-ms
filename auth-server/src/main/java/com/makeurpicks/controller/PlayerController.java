@@ -1,5 +1,8 @@
 package com.makeurpicks.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -8,7 +11,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.makeurpicks.domain.OAuthClientDetails;
 import com.makeurpicks.domain.Player;
+import com.makeurpicks.service.OAuthClientsService;
 import com.makeurpicks.service.PlayerService;
 
 @RestController
@@ -17,6 +22,9 @@ public class PlayerController {
 
 	@Autowired
 	private PlayerService playerService;
+	
+	@Autowired
+	private OAuthClientsService clientService;
 	
 	@Value("${config.oauth2.ui-uri}")
 	private String ui;
@@ -35,6 +43,19 @@ public class PlayerController {
 	public String testOpen()
 	{
 		return ui;
+	}
+	
+	@RequestMapping(method=RequestMethod.GET, value="/getallclientdetails")
+	public List<OAuthClientDetails> getAllClientDetails()
+	{
+		
+		List<OAuthClientDetails> oauthclientdetailslist=new ArrayList<OAuthClientDetails>();
+		Iterable<OAuthClientDetails> allclients=clientService.findAllClients();
+		if(allclients!=null){
+			allclients.forEach(oAuthClientDetails -> oauthclientdetailslist.add(oAuthClientDetails));	
+		}
+		
+		return oauthclientdetailslist;
 	}
 	
 }

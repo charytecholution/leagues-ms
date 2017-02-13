@@ -113,6 +113,12 @@
 			templateUrl: 'partials/createClient.html'
 		};
 	});
+	app.directive('clients', function() {
+		return {
+			restrict: 'E',
+			templateUrl: 'partials/clients.html'
+		};
+	});
 	
 	app.factory('leagueService', function ($http, $log) {
 	$log.debug('leagueService');
@@ -656,19 +662,21 @@ app.controller('CreateClientController', function ($scope, $http, $window, $log,
 		
 		$scope.showclients=true;
 		$scope.client={};
+		$scope.clients={};
 		$scope.client.name = "";
 		$scope.client.authentication="";
 		$scope.client.authenticationid = "";
-		$scope.client.clientid = "";
-		$scope.client.clientsecret = "";
+		$scope.client.clientId = "";
+		$scope.client.client_secret = "";
 		$scope.client.authenticationid = "";
 		//$scope.season.endYear = 2018;
 		
-		/*$http.get('/admin/client').success(function(data) {
-			$scope.client = data;
+		$http.get('/admin/auth/players/getallclientdetails').success(function(data) {
+			$scope.clients = data;
+		//	alert("Data is:"+$scope.client);
 			if (data[0] === undefined)
-				$scope.showseasons=false;
-		});*/
+				$scope.showclients=false;
+		});
 		
 	/*	$http.get('/admin/leagues/types').success(function(data) {
 			if (data[0] )
