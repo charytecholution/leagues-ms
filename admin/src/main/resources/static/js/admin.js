@@ -146,7 +146,7 @@
 		$scope.showseasons=true;
 		$scope.season={};
 		$scope.season.leagueType = "pickem";
-		$scope.season.leagueTypes="pickem";
+		$scope.season.leagueTypes=["pickem"];
 		$scope.season.startYear = 2017;
 		$scope.season.endYear = 2018;
 		
