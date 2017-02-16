@@ -1,9 +1,11 @@
 package com.makeurpicks.service;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
+import static org.mockito.Matchers.contains;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -18,19 +20,21 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureTestDatabase;
 import org.springframework.security.oauth2.provider.ClientDetails;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.makeurpicks.AuthServerApplication;
 import com.makeurpicks.dao.ClientDetailsDAO;
 import com.makeurpicks.domain.OAuthClientDetails;
 import com.makeurpicks.domain.OAuthClientDetailsBuilder;
 import com.makeurpicks.exception.OAuthclientValidationException;
 import com.makeurpicks.exception.OAuthclientValidationException.OAuthClientExceptions;
-import com.makeurpicks.exception.PlayerValidationException;
 
-//@RunWith(SpringJUnit4ClassRunner.class)
-//@SpringApplicationConfiguration(classes = AuthServerApplication.class)
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(SpringJUnit4ClassRunner.class)
+@SpringApplicationConfiguration(classes = AuthServerApplication.class)
+//@RunWith(MockitoJUnitRunner.class)
 
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class OAuthServiceTest {
@@ -54,7 +58,7 @@ public class OAuthServiceTest {
 		
 		OAuthClientDetails authClientDetails=new OAuthClientDetails();
 		authClientDetails.setClientId("1");
-		authClientDetails.setClient_secret("11111");
+		authClientDetails.setClient_secret("111111");
 		
 		OAuthClientDetails authClientDetails2=new OAuthClientDetails();
 		authClientDetails.setClientId("2");
@@ -74,76 +78,98 @@ public class OAuthServiceTest {
 			clients.forEach(oAuthClientDetails -> oauthclientdetailslist.add(oAuthClientDetails));	
 		}
 		
-	//	assertNotEquals(0, oauthclientdetailslist.size());
-		assertEquals(2, oauthclientdetailslist.size());
+		assertNotEquals(Long.valueOf(0).longValue(), Long.valueOf(oauthclientdetailslist.size()).longValue());
+		//assertEquals(2, oauthclientdetailslist.size());
 		
 		
 	}
 	
 	
 	@Test
-	public void testCreateClientsInValidDataNoClientId() throws OAuthclientValidationException{
+	public void testCreateClientsInValidDataNoClientId() throws OAuthclientValidationException {
 		if(oAuthClientService==null){
 			fail();
 		}
-		OAuthClientDetails oAuthClientDetails=new OAuthClientDetailsBuilder(null, "testsecret", "test","admin", "local","http://localhost", Boolean.FALSE.toString()).build();
-		OAuthClientDetails output=oAuthClientService.createOAuthClientDetails(oAuthClientDetails);
-		
-	//	when(leagueService.getLeagueByName(league.getLeagueName())).thenReturn(league);
-		//oAuthClientService.
 		expectedEx.expect(OAuthclientValidationException.class);
-		expectedEx.expectMessage(OAuthClientExceptions.CLIENT_ID_NULL.toString());
+		expectedEx.expectMessage(contains(OAuthClientExceptions.CLIENT_ID_NULL.toString()));
+		//assertThat(expectedEx.e)
+		//SINCE THERE COULD BE MANY REASONS WITHINA SINGLE EXCEPTION BLOCK, GET MESSAGES RETURN A ARRAY. COMPARING IT WITH A 
+		//SINGLE STRING ALWAYS MAKES IT FAIL. HENCE USING MATCHER
+
+		
+		//OAuthClientDetails oAuthClientDetails=new OAuthClientDetailsBuilder(null, "testsecret", "ROLE_TRUSTED_CLIENT","client_credentials,password,authorization_code,refresh_token", "read,write","http://localhost", Boolean.FALSE.toString()).build();
+		OAuthClientDetails oAuthClientDetails=new OAuthClientDetailsBuilder(null, "testsecret", "ROLE_TRUSTED_CLIENT","client_credentials,password,authorization_code,refresh_token", "read,write",null, Boolean.FALSE.toString()).build();
+
+		OAuthClientDetails output=null;
+		
+		output = oAuthClientService.createOAuthClientDetails(oAuthClientDetails);
+			
+		assertNull(output);
+	
+		
+		
+	}
+	
+	@Test
+	public void testCreateClientsInValidDataNoGrantType() throws OAuthclientValidationException {
+		if(oAuthClientService==null){
+			fail();
+		}
+		expectedEx.expect(OAuthclientValidationException.class);
+		expectedEx.expectMessage(contains(OAuthClientExceptions.AUTH_GRANT_TYPE_NULL_OR_EMPTY.toString()));
+		
+		OAuthClientDetails oAuthClientDetails=new OAuthClientDetailsBuilder("123", "testsecret", "ROLE_TRUSTED_CLIENT",null, "read,write","http://localhost", Boolean.FALSE.toString()).build();
+
+		OAuthClientDetails output=null;
+		
+		
+		output = oAuthClientService.createOAuthClientDetails(oAuthClientDetails);
+		
 		assertNull(output);
 		
 		
 	}
 	
 	@Test
-	public void testCreateClientsInValidDataNoGrantType() throws OAuthclientValidationException{
+	public void testCreateClientsInValidDataNoURI() throws OAuthclientValidationException {
 		if(oAuthClientService==null){
 			fail();
 		}
-		OAuthClientDetails oAuthClientDetails=new OAuthClientDetailsBuilder("123", "testsecret", "test",null, "local","http://localhost", Boolean.FALSE.toString()).build();
-		OAuthClientDetails output=oAuthClientService.createOAuthClientDetails(oAuthClientDetails);
+		
+		
+		expectedEx.expect(OAuthclientValidationException.class);
+		expectedEx.expectMessage(contains(OAuthClientExceptions.REDIRECT_URI_NULL_OR_EMPTY.toString()));
+		
+		OAuthClientDetails oAuthClientDetails=new OAuthClientDetailsBuilder("123", "testsecret", "ROLE_TRUSTED_CLIENT","client_credentials,password,authorization_code,refresh_token", "read,write",null, Boolean.FALSE.toString()).build();
+
+		OAuthClientDetails output=null;
+	
+			output = oAuthClientService.createOAuthClientDetails(oAuthClientDetails);
 		
 	//	when(leagueService.getLeagueByName(league.getLeagueName())).thenReturn(league);
 		//oAuthClientService.
-		expectedEx.expect(OAuthclientValidationException.class);
-		expectedEx.expectMessage(OAuthClientExceptions.AUTH_GRANT_TYPE_NULL_OR_EMPTY.toString());
+		
 		assertNull(output);
 		
 		
 	}
 	
 	@Test
-	public void testCreateClientsInValidDataNoURI() throws OAuthclientValidationException{
+	public void testCreateClientsInValidDataNoScope() throws OAuthclientValidationException {
 		if(oAuthClientService==null){
 			fail();
 		}
-		OAuthClientDetails oAuthClientDetails=new OAuthClientDetailsBuilder("123", "testsecret", "test","admin", "local",null, Boolean.FALSE.toString()).build();
-		OAuthClientDetails output=oAuthClientService.createOAuthClientDetails(oAuthClientDetails);
+		expectedEx.expect(OAuthclientValidationException.class);
+		expectedEx.expectMessage(contains(OAuthClientExceptions.SCOPE_NULL_OR_EMPTY.toString()));
+		OAuthClientDetails oAuthClientDetails=new OAuthClientDetailsBuilder("1234", "testsecret", "ROLE_TRUSTED_CLIENT","client_credentials,password,authorization_code,refresh_token", null,"http://localhost", Boolean.FALSE.toString()).build();
+
+		OAuthClientDetails output=null;
+		output = oAuthClientService.createOAuthClientDetails(oAuthClientDetails);
+		
 		
 	//	when(leagueService.getLeagueByName(league.getLeagueName())).thenReturn(league);
 		//oAuthClientService.
-		expectedEx.expect(OAuthclientValidationException.class);
-		expectedEx.expectMessage(OAuthClientExceptions.REDIRECT_URI_NULL_OR_EMPTY.toString());
-		assertNull(output);
 		
-		
-	}
-	
-	@Test
-	public void testCreateClientsInValidDataNoScope() throws OAuthclientValidationException{
-		if(oAuthClientService==null){
-			fail();
-		}
-		OAuthClientDetails oAuthClientDetails=new OAuthClientDetailsBuilder("123", "testsecret", "test","admin", null,"http://localhost", Boolean.FALSE.toString()).build();
-		OAuthClientDetails output=oAuthClientService.createOAuthClientDetails(oAuthClientDetails);
-		
-	//	when(leagueService.getLeagueByName(league.getLeagueName())).thenReturn(league);
-		//oAuthClientService.
-		expectedEx.expect(OAuthclientValidationException.class);
-		expectedEx.expectMessage(OAuthClientExceptions.SCOPE_NULL_OR_EMPTY.toString());
 		assertNull(output);
 
 		
@@ -151,14 +177,17 @@ public class OAuthServiceTest {
 	}
 	
 	@Test
-	public void testCreateClientsValidData() throws OAuthclientValidationException{
+	public void testCreateClientsValidData() throws OAuthclientValidationException {
 		if(oAuthClientService==null){
 			fail();
 		}
-		OAuthClientDetails oAuthClientDetails=new OAuthClientDetailsBuilder("123", "testsecret", "test","admin", "testscope","http://localhost", Boolean.FALSE.toString()).build();
-		OAuthClientDetails output=oAuthClientService.createOAuthClientDetails(oAuthClientDetails);
+		OAuthClientDetails oAuthClientDetails=new OAuthClientDetailsBuilder("123", "testsecret", "ROLE_TRUSTED_CLIENT","client_credentials,password,authorization_code,refresh_token", "read,write","http://localhost", Boolean.FALSE.toString()).build();
+		OAuthClientDetails output=null;
+		
+		output = oAuthClientService.createOAuthClientDetails(oAuthClientDetails);
+		
 		ClientDetails clientDetails=oAuthClientService.loadClientByClientId(oAuthClientDetails.getClientId());
-		when(oAuthClientService.loadClientByClientId(oAuthClientDetails.getClientId())).thenReturn(clientDetails);
+		//when(oAuthClientService.loadClientByClientId(oAuthClientDetails.getClientId())).thenReturn(clientDetails);
 		
 		assertNotNull(output);
 		assertNotNull(clientDetails.getClientSecret());

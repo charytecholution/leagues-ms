@@ -96,6 +96,9 @@ public class OAuthClientDetails implements ClientDetails {
 	}
 
 	public Set<String> getResource_ids() {
+		if(resource_ids == null){
+			return null;
+		}
 		HashSet<String> s = new HashSet<String>();
 		StringTokenizer t = new StringTokenizer(resource_ids, ",");
 		while (t.hasMoreTokens()) {
@@ -118,6 +121,9 @@ public class OAuthClientDetails implements ClientDetails {
 	}
 
 	public Set<String> getScope() {
+		if(scope==null){
+			return null;
+		}
 		HashSet<String> s = new HashSet<String>();
 		StringTokenizer t = new StringTokenizer(scope, ",");
 		while (t.hasMoreTokens()) {
@@ -140,6 +146,10 @@ public class OAuthClientDetails implements ClientDetails {
 	}
 
 	public Set<String> getAuthorized_grant_types() {
+		if(authorized_grant_types== null)
+		{
+				return null;
+		}
 		HashSet<String> s = new HashSet<String>();
 		StringTokenizer t = new StringTokenizer(authorized_grant_types, ",");
 		while (t.hasMoreTokens()) {
@@ -154,6 +164,10 @@ public class OAuthClientDetails implements ClientDetails {
 	}
 
 	public Set<String> getWeb_server_redirect_uri() {
+		if(web_server_redirect_uri ==null){
+			return null;
+		}
+			
 		HashSet<String> s = new HashSet<String>();
 		StringTokenizer t = new StringTokenizer(web_server_redirect_uri, ",");
 		while (t.hasMoreTokens()) {
@@ -216,6 +230,9 @@ public class OAuthClientDetails implements ClientDetails {
 
 	@Override
 	public Collection<GrantedAuthority> getAuthorities() {
+		if(authorities==null){
+			return null;
+		}
 		Collection<GrantedAuthority> auths = new HashSet<GrantedAuthority>();
 		StringTokenizer t = new StringTokenizer(authorities, ",");
 		while (t.hasMoreTokens()) {
