@@ -669,9 +669,21 @@ app.controller('CreateClientController', function ($scope, $http, $window, $log,
 		$scope.client.clientId = "";
 		$scope.client.client_secret = "";
 		$scope.client.authenticationid = "";
+		$scope.client.scope= "";
+		$scope.client.authorized_grant_types = "";
+		$scope.client.web_server_redirect_uri ="";
+		$scope.client.authorities = "";
+		$scope.client.refresh_token_validity=3600;
+		$scope.client.access_token_validity=3600;
+		$scope.client.autoapprove="true";
 		//$scope.season.endYear = 2018;
+		$scope.autoapprove = [
+		    { name: 'True',    selected: true },
+		    { name: 'False',   selected: false }
+		    
+		  ];
 		
-		$http.get('/admin/auth/players/getallclientdetails').success(function(data) {
+		$http.get('/admin/auth/players/getallclientdetails/').success(function(data) {
 			$scope.clients = data;
 		//	alert("Data is:"+$scope.client);
 			if (data[0] === undefined)
@@ -714,25 +726,25 @@ app.controller('CreateClientController', function ($scope, $http, $window, $log,
 
 		
 			$log.debug("CreateClientController:createClient");
-		/*	
+			
 			$http({
-				method : "POST",
-				url : '/admin/leagues/seasons/',
+				method : "PUT",
+				url : '/admin/auth/players/',
 				contentType : "application/json",
 				dataType : "json",
-				data : JSON.stringify($scope.season)
+				data : JSON.stringify($scope.client)
 			}).success(function(res) { 
 				
-//				$scope.showgames = true;
-//				$http.get('/admin/leagues/seasons/current').success(function(data) {
-//					$scope.seasons = data;
-//				});
-				$window.location.href = '/admin/#/leagues';
+				$scope.showclients=true;
+				$http.get('/admin/auth/players/getallclientdetails').success(function(data) {
+					$scope.clients = data;
+				});
+				$window.location.href = '/admin/#/client';
 				
 			}).error(function(res) {
-				alert('fail');
+				//alert('fail');
 			});
-			*/
+			
 		}
 	});
 	

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.makeurpicks.domain.OAuthClientDetails;
 import com.makeurpicks.domain.Player;
+import com.makeurpicks.exception.OAuthclientValidationException;
 import com.makeurpicks.service.OAuthClientsService;
 import com.makeurpicks.service.PlayerService;
 
@@ -57,5 +58,16 @@ public class PlayerController {
 		
 		return oauthclientdetailslist;
 	}
+	
+	@RequestMapping(method=RequestMethod.PUT, value="/")
+	public @ResponseBody OAuthClientDetails createClients(@RequestBody OAuthClientDetails oAuthClientDetails) throws OAuthclientValidationException
+	{
+		
+		OAuthClientDetails authClientDetails=clientService.createOAuthClientDetails(oAuthClientDetails);
+		
+		return authClientDetails;
+	}
+	
+	
 	
 }

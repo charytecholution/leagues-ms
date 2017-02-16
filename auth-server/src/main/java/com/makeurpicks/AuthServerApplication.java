@@ -29,6 +29,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
+import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
@@ -42,13 +43,14 @@ import com.makeurpicks.domain.OAuthClientDetails;
 import com.makeurpicks.domain.OAuthClientDetailsBuilder;
 import com.makeurpicks.domain.Player;
 import com.makeurpicks.domain.PlayerBuilder;
+import com.makeurpicks.exception.OAuthclientValidationException;
 import com.makeurpicks.service.OAuthClientsService;
 import com.makeurpicks.service.PlayerService;
 
 @SpringBootApplication
 @EnableEurekaClient
 @EnableJpaRepositories
-// @EnableResourceServer
+//@EnableResourceServer
 public class AuthServerApplication extends WebMvcConfigurerAdapter implements CommandLineRunner {
 
 	private static final Logger log = LoggerFactory.getLogger(AuthServerApplication.class);
@@ -287,6 +289,11 @@ public class AuthServerApplication extends WebMvcConfigurerAdapter implements Co
 				"client_credentials,password,authorization_code,refresh_token", "read,write", "http://localhost:9000/",
 				"true").build());
 
-		clientService.createOAuthClientDetailsList(clientList);
+		try {
+			clientService.createOAuthClientDetailsList(clientList);
+		} catch (OAuthclientValidationException e) {
+			// TODO Auto-generated catch block
+		//	e.printStackTrace();
+		}
 	}
 }

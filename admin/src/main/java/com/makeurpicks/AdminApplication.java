@@ -24,6 +24,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.oauth2.client.OAuth2ClientContext;
 import org.springframework.security.oauth2.client.OAuth2RestOperations;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
+import org.springframework.security.oauth2.client.resource.BaseOAuth2ProtectedResourceDetails;
 import org.springframework.security.oauth2.client.token.grant.code.AuthorizationCodeResourceDetails;
 import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.security.web.csrf.CsrfToken;
@@ -57,11 +58,22 @@ public class AdminApplication {
 	@Autowired
 	OAuth2ClientContext oAuth2ClientContext;
 	
-	@LoadBalanced
+	/*@LoadBalanced
 	@Bean
 	public OAuth2RestOperations securerestTemplate() {
 		return new OAuth2RestTemplate(oAuth2ProtectedResourceDetails, oAuth2ClientContext);
-	}
+	}*/
+	
+	@Bean(value = "oauth2RestOperationsTemplate")
+	 @LoadBalanced
+	 public OAuth2RestOperations oauth2RestOperationsTemplate() {
+	  BaseOAuth2ProtectedResourceDetails baseOAuth2ProtectedResourceDetails = new BaseOAuth2ProtectedResourceDetails();
+	//  baseOAuth2ProtectedResourceDetails.setClientId("confidential");
+	  baseOAuth2ProtectedResourceDetails.setClientId("trusted");
+	  baseOAuth2ProtectedResourceDetails.setClientSecret("secret");
+	  baseOAuth2ProtectedResourceDetails.setGrantType("password");
+	  return new OAuth2RestTemplate(baseOAuth2ProtectedResourceDetails);
+	 }
 	 
 	/* @Bean
 		public FilterRegistrationBean corsFilter() {
@@ -86,7 +98,7 @@ public class AdminApplication {
             http
             	.logout().logoutSuccessUrl("/").and()
             	.authorizeRequests()
-                    .antMatchers("/login", "/beans", "/user", "/random","/seasons/**").permitAll()
+                    .antMatchers("/login", "/beans", "/user", "/random","/seasons/**","/admin/**").permitAll()
                     .anyRequest().hasRole("ADMIN").and()
 
                 .csrf()

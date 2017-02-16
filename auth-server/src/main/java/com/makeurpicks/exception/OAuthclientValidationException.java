@@ -2,6 +2,7 @@ package com.makeurpicks.exception;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -23,6 +24,11 @@ public class OAuthclientValidationException extends Exception {
 	public OAuthclientValidationException(OAuthClientExceptions... oauthCLientExceptions) {
 		log.debug(oauthCLientExceptions);
 		exceptions = new ArrayList<OAuthClientExceptions>(Arrays.asList(oauthCLientExceptions));
+	}
+	
+	public OAuthclientValidationException(List<OAuthClientExceptions> oauthCLientExceptions) {
+		log.debug(oauthCLientExceptions);
+		exceptions = oauthCLientExceptions;
 	}
 
 	public boolean hasException() {

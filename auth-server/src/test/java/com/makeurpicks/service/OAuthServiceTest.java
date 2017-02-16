@@ -24,6 +24,7 @@ import org.springframework.security.oauth2.provider.ClientDetails;
 import com.makeurpicks.dao.ClientDetailsDAO;
 import com.makeurpicks.domain.OAuthClientDetails;
 import com.makeurpicks.domain.OAuthClientDetailsBuilder;
+import com.makeurpicks.exception.OAuthclientValidationException;
 import com.makeurpicks.exception.OAuthclientValidationException.OAuthClientExceptions;
 import com.makeurpicks.exception.PlayerValidationException;
 
@@ -81,7 +82,7 @@ public class OAuthServiceTest {
 	
 	
 	@Test
-	public void testCreateClientsInValidDataNoClientId(){
+	public void testCreateClientsInValidDataNoClientId() throws OAuthclientValidationException{
 		if(oAuthClientService==null){
 			fail();
 		}
@@ -90,7 +91,7 @@ public class OAuthServiceTest {
 		
 	//	when(leagueService.getLeagueByName(league.getLeagueName())).thenReturn(league);
 		//oAuthClientService.
-		expectedEx.expect(PlayerValidationException.class);
+		expectedEx.expect(OAuthclientValidationException.class);
 		expectedEx.expectMessage(OAuthClientExceptions.CLIENT_ID_NULL.toString());
 		assertNull(output);
 		
@@ -98,7 +99,7 @@ public class OAuthServiceTest {
 	}
 	
 	@Test
-	public void testCreateClientsInValidDataNoGrantType(){
+	public void testCreateClientsInValidDataNoGrantType() throws OAuthclientValidationException{
 		if(oAuthClientService==null){
 			fail();
 		}
@@ -107,7 +108,7 @@ public class OAuthServiceTest {
 		
 	//	when(leagueService.getLeagueByName(league.getLeagueName())).thenReturn(league);
 		//oAuthClientService.
-		expectedEx.expect(PlayerValidationException.class);
+		expectedEx.expect(OAuthclientValidationException.class);
 		expectedEx.expectMessage(OAuthClientExceptions.AUTH_GRANT_TYPE_NULL_OR_EMPTY.toString());
 		assertNull(output);
 		
@@ -115,7 +116,7 @@ public class OAuthServiceTest {
 	}
 	
 	@Test
-	public void testCreateClientsInValidDataNoURI(){
+	public void testCreateClientsInValidDataNoURI() throws OAuthclientValidationException{
 		if(oAuthClientService==null){
 			fail();
 		}
@@ -124,7 +125,7 @@ public class OAuthServiceTest {
 		
 	//	when(leagueService.getLeagueByName(league.getLeagueName())).thenReturn(league);
 		//oAuthClientService.
-		expectedEx.expect(PlayerValidationException.class);
+		expectedEx.expect(OAuthclientValidationException.class);
 		expectedEx.expectMessage(OAuthClientExceptions.REDIRECT_URI_NULL_OR_EMPTY.toString());
 		assertNull(output);
 		
@@ -132,7 +133,7 @@ public class OAuthServiceTest {
 	}
 	
 	@Test
-	public void testCreateClientsInValidDataNoScope(){
+	public void testCreateClientsInValidDataNoScope() throws OAuthclientValidationException{
 		if(oAuthClientService==null){
 			fail();
 		}
@@ -141,7 +142,7 @@ public class OAuthServiceTest {
 		
 	//	when(leagueService.getLeagueByName(league.getLeagueName())).thenReturn(league);
 		//oAuthClientService.
-		expectedEx.expect(PlayerValidationException.class);
+		expectedEx.expect(OAuthclientValidationException.class);
 		expectedEx.expectMessage(OAuthClientExceptions.SCOPE_NULL_OR_EMPTY.toString());
 		assertNull(output);
 
@@ -150,7 +151,7 @@ public class OAuthServiceTest {
 	}
 	
 	@Test
-	public void testCreateClientsValidData(){
+	public void testCreateClientsValidData() throws OAuthclientValidationException{
 		if(oAuthClientService==null){
 			fail();
 		}
