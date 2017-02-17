@@ -16,35 +16,38 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureTestDatabase;
 import org.springframework.security.oauth2.provider.ClientDetails;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.makeurpicks.AuthServerApplication;
 import com.makeurpicks.dao.ClientDetailsDAO;
 import com.makeurpicks.domain.OAuthClientDetails;
 import com.makeurpicks.domain.OAuthClientDetailsBuilder;
 import com.makeurpicks.exception.OAuthclientValidationException;
 import com.makeurpicks.exception.OAuthclientValidationException.OAuthClientExceptions;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = AuthServerApplication.class)
-//@RunWith(MockitoJUnitRunner.class)
+//@RunWith(SpringJUnit4ClassRunner.class)
+//@SpringApplicationConfiguration(classes = AuthServerApplication.class)
+@RunWith(MockitoJUnitRunner.class)
+
 
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class OAuthServiceTest {
 
 	
 	@Autowired
+	@InjectMocks
 	private OAuthClientsService oAuthClientService;
 	
 	
 	
+	
+	//@InjectMocks
+	//@DataJpaTest
 	@Mock
 	public ClientDetailsDAO clientDetailsDAO;
 	
@@ -56,7 +59,7 @@ public class OAuthServiceTest {
 	public void setup() {
 		MockitoAnnotations.initMocks(this);
 		
-		OAuthClientDetails authClientDetails=new OAuthClientDetails();
+		/*OAuthClientDetails authClientDetails=new OAuthClientDetails();
 		authClientDetails.setClientId("1");
 		authClientDetails.setClient_secret("111111");
 		
@@ -64,7 +67,7 @@ public class OAuthServiceTest {
 		authClientDetails.setClientId("2");
 		authClientDetails.setClient_secret("22222");
 		clientDetailsDAO.save(authClientDetails);
-		clientDetailsDAO.save(authClientDetails2);
+		clientDetailsDAO.save(authClientDetails2);*/
 	}
 	
 	@Test
@@ -72,14 +75,22 @@ public class OAuthServiceTest {
 		if(oAuthClientService==null){
 			fail();
 		}
+		OAuthClientDetails oAuthClientDetails1=new OAuthClientDetailsBuilder("123123", "testsecret", "ROLE_TRUSTED_CLIENT","client_credentials,password,authorization_code,refresh_token", "read,write","http://localhost", Boolean.FALSE.toString()).build();
+		OAuthClientDetails oAuthClientDetails2=new OAuthClientDetailsBuilder("123123", "testsecret", "ROLE_TRUSTED_CLIENT","client_credentials,password,authorization_code,refresh_token", "read,write","http://localhost", Boolean.FALSE.toString()).build();
+		List<OAuthClientDetails> stubReturnList=new ArrayList<OAuthClientDetails>();
+		
+		stubReturnList.add(oAuthClientDetails1);
+		stubReturnList.add(oAuthClientDetails2);
+		when(clientDetailsDAO.findAll()).thenReturn(stubReturnList);
 		Iterable<OAuthClientDetails > clients=oAuthClientService.findAllClients();
 		List<OAuthClientDetails> oauthclientdetailslist=new ArrayList<OAuthClientDetails>();
-		if(oauthclientdetailslist!=null){
+		if(clients!=null){
 			clients.forEach(oAuthClientDetails -> oauthclientdetailslist.add(oAuthClientDetails));	
 		}
 		
-		assertNotEquals(Long.valueOf(0).longValue(), Long.valueOf(oauthclientdetailslist.size()).longValue());
-		//assertEquals(2, oauthclientdetailslist.size());
+		//assertNotEquals(Long.valueOf(0).longValue(), Long.valueOf(oauthclientdetailslist.size()).longValue());
+		//if()
+		assertThat(oauthclientdetailslist.size()==2);
 		
 		
 	}
@@ -91,7 +102,7 @@ public class OAuthServiceTest {
 			fail();
 		}
 		expectedEx.expect(OAuthclientValidationException.class);
-		expectedEx.expectMessage(contains(OAuthClientExceptions.CLIENT_ID_NULL.toString()));
+		expectedEx.expectMessage(OAuthClientExceptions.CLIENT_ID_NULL.toString());
 		//assertThat(expectedEx.e)
 		//SINCE THERE COULD BE MANY REASONS WITHINA SINGLE EXCEPTION BLOCK, GET MESSAGES RETURN A ARRAY. COMPARING IT WITH A 
 		//SINGLE STRING ALWAYS MAKES IT FAIL. HENCE USING MATCHER
@@ -104,7 +115,7 @@ public class OAuthServiceTest {
 		
 		output = oAuthClientService.createOAuthClientDetails(oAuthClientDetails);
 			
-		assertNull(output);
+	//	assertNull(output);
 	
 		
 		
@@ -116,16 +127,16 @@ public class OAuthServiceTest {
 			fail();
 		}
 		expectedEx.expect(OAuthclientValidationException.class);
-		expectedEx.expectMessage(contains(OAuthClientExceptions.AUTH_GRANT_TYPE_NULL_OR_EMPTY.toString()));
+		expectedEx.expectMessage(OAuthClientExceptions.AUTH_GRANT_TYPE_NULL_OR_EMPTY.toString());
 		
 		OAuthClientDetails oAuthClientDetails=new OAuthClientDetailsBuilder("123", "testsecret", "ROLE_TRUSTED_CLIENT",null, "read,write","http://localhost", Boolean.FALSE.toString()).build();
 
-		OAuthClientDetails output=null;
+		//OAuthClientDetails output=null;
 		
 		
-		output = oAuthClientService.createOAuthClientDetails(oAuthClientDetails);
+		OAuthClientDetails	output = oAuthClientService.createOAuthClientDetails(oAuthClientDetails);
 		
-		assertNull(output);
+		//assertNull(output);
 		
 		
 	}
@@ -138,18 +149,18 @@ public class OAuthServiceTest {
 		
 		
 		expectedEx.expect(OAuthclientValidationException.class);
-		expectedEx.expectMessage(contains(OAuthClientExceptions.REDIRECT_URI_NULL_OR_EMPTY.toString()));
+		expectedEx.expectMessage(OAuthClientExceptions.REDIRECT_URI_NULL_OR_EMPTY.toString());
 		
 		OAuthClientDetails oAuthClientDetails=new OAuthClientDetailsBuilder("123", "testsecret", "ROLE_TRUSTED_CLIENT","client_credentials,password,authorization_code,refresh_token", "read,write",null, Boolean.FALSE.toString()).build();
 
-		OAuthClientDetails output=null;
+		//OAuthClientDetails output=null;
 	
-			output = oAuthClientService.createOAuthClientDetails(oAuthClientDetails);
+		OAuthClientDetails	output = oAuthClientService.createOAuthClientDetails(oAuthClientDetails);
 		
 	//	when(leagueService.getLeagueByName(league.getLeagueName())).thenReturn(league);
 		//oAuthClientService.
 		
-		assertNull(output);
+		//assertNull(output);
 		
 		
 	}
@@ -160,17 +171,17 @@ public class OAuthServiceTest {
 			fail();
 		}
 		expectedEx.expect(OAuthclientValidationException.class);
-		expectedEx.expectMessage(contains(OAuthClientExceptions.SCOPE_NULL_OR_EMPTY.toString()));
+		expectedEx.expectMessage(OAuthClientExceptions.SCOPE_NULL_OR_EMPTY.toString());
 		OAuthClientDetails oAuthClientDetails=new OAuthClientDetailsBuilder("1234", "testsecret", "ROLE_TRUSTED_CLIENT","client_credentials,password,authorization_code,refresh_token", null,"http://localhost", Boolean.FALSE.toString()).build();
 
-		OAuthClientDetails output=null;
-		output = oAuthClientService.createOAuthClientDetails(oAuthClientDetails);
+		//OAuthClientDetails output=null;
+		OAuthClientDetails output = oAuthClientService.createOAuthClientDetails(oAuthClientDetails);
 		
 		
 	//	when(leagueService.getLeagueByName(league.getLeagueName())).thenReturn(league);
 		//oAuthClientService.
 		
-		assertNull(output);
+		//assertNull(output);
 
 		
 		
@@ -182,15 +193,15 @@ public class OAuthServiceTest {
 			fail();
 		}
 		OAuthClientDetails oAuthClientDetails=new OAuthClientDetailsBuilder("123", "testsecret", "ROLE_TRUSTED_CLIENT","client_credentials,password,authorization_code,refresh_token", "read,write","http://localhost", Boolean.FALSE.toString()).build();
-		OAuthClientDetails output=null;
+		//OAuthClientDetails output=null;
 		
-		output = oAuthClientService.createOAuthClientDetails(oAuthClientDetails);
+		OAuthClientDetails output = oAuthClientService.createOAuthClientDetails(oAuthClientDetails);
 		
-		ClientDetails clientDetails=oAuthClientService.loadClientByClientId(oAuthClientDetails.getClientId());
+	//	ClientDetails clientDetails=oAuthClientService.loadClientByClientId(oAuthClientDetails.getClientId());
 		//when(oAuthClientService.loadClientByClientId(oAuthClientDetails.getClientId())).thenReturn(clientDetails);
 		
 		assertNotNull(output);
-		assertNotNull(clientDetails.getClientSecret());
+		assertNotNull(output.getClientSecret());
 
 		
 		
