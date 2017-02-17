@@ -3,6 +3,7 @@ package com.makeurpicks.service;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -13,6 +14,7 @@ import com.makeurpicks.domain.PlayerLeague;
 import com.makeurpicks.domain.PlayerLeagueId;
 import com.makeurpicks.exception.LeagueValidationException;
 import com.makeurpicks.exception.LeagueValidationException.LeagueExceptions;
+import com.makeurpicks.message.channels.LeagueWriter;
 import com.makeurpicks.repository.LeagueRepository;
 import com.makeurpicks.repository.PlayerLeagueRepository;
 import com.makeurpicks.utils.HelperUtils;
@@ -22,18 +24,21 @@ public class LeagueService {
 
 	private LeagueRepository leagueRepository;
 	private PlayerLeagueRepository playerLeagueRepository;
+	private  LeagueWriter writer;
 	@Autowired
-	public LeagueService(LeagueRepository leagueRepository,PlayerLeagueRepository playerLeagueRepository) {
+	public LeagueService(LeagueRepository leagueRepository,PlayerLeagueRepository playerLeagueRepository,LeagueWriter writer) {
 		this.leagueRepository=leagueRepository;
 		this.playerLeagueRepository=playerLeagueRepository;
+		this.writer=writer;
 		
 	}
 	public League createLeague(League league) throws LeagueValidationException {
 		validateLeague(league);
-		/*String id = UUID.randomUUID().toString();
-		league.set(id);*/
-		leagueRepository.save(league);
-		addPlayerToLeague(league, league.getAdminId());
+		String id = UUID.randomUUID().toString();
+		league.setId(id);
+//		leagueRepository.save(league);
+		writer.write(league);
+//		addPlayerToLeague(league, league.getAdminId());
 		return league;
 	}
 

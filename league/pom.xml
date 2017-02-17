@@ -19,7 +19,10 @@
 		<java.version>1.8</java.version>
 	</properties>
 	<dependencies>
-
+	<dependency>
+  <groupId>org.springframework.cloud</groupId>
+  <artifactId>spring-cloud-starter-stream-rabbit</artifactId>
+</dependency>
 		<!-- turbine/hystix -->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>

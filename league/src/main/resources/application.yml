@@ -4,8 +4,14 @@ server:
 security.user.password: testme
 #security.user.password: dinesh
 spring:
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+    spring.rabbitmq.addresses: localhost:5672
   profiles:
-    active: container
+    active: dev
   jpa:
     show-sql: true
     hibernate:
@@ -17,7 +23,7 @@ spring:
 #    url: jdbc:mysql://localhost:3304/league
 #    username: root
 #    password: admin123
-    url: jdbc:mysql://localhost:3306/cf_0619e413_5337_476d_98b7_2e1d996aa224
+    url: jdbc:mysql://localhost:3304/league
     username: root
     password: admin123
     driver-class-name: com.mysql.jdbc.Driver
