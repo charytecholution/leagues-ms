@@ -5,6 +5,8 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.UUID;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -21,6 +23,8 @@ public class SeasonService {
 	@Autowired 
 	private SeasonRepository seasonRepository;
 	
+	Log logs =  LogFactory.getLog(SeasonService.class);
+	
 	
 	public List<Season> getCurrentSeasons()
 	{
@@ -31,6 +35,8 @@ public class SeasonService {
 		
 		for (LeagueType lt : LeagueType.values())
 		{
+			logs.debug("Hello --------------"+lt.toString());
+			
 			Iterable<Season> seasons = seasonRepository.getSeasonsByLeagueType(lt.toString());
 			for (Season season:seasons)
 			{

@@ -40,6 +40,7 @@ public class LeagueController {
 
 	@RequestMapping(method = RequestMethod.GET, value = "/")
 	public @ResponseBody Iterable<League> getAllLeague() {
+		log.debug("In ------------------------ League Controller ");
 		return leagueService.getAllLeagues();
 
 	}

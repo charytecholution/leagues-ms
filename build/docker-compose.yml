@@ -26,20 +26,20 @@ services:
       - "3303:3306"
     expose:
       - "3303"
-  auth-server:
-    build: ../auth-server/
-    networks:
-      - myp-network
-    ports:
-      - "9999:9999"
-    expose:
-      - "9999"
-    restart: always      
-    links:
-      - auth-db:auth-db
-    depends_on:
-      - auth-db
-      - eureka
+#  auth-server:
+#    build: ../auth-server/
+#    networks:
+#      - myp-network
+#    ports:
+#      - "9999:9999"
+#    expose:
+#      - "9999"
+#    restart: always      
+#    links:
+#      - auth-db:auth-db
+#    depends_on:
+#      - auth-db
+#      - eureka
   config-server:
     build: ../server-config/
     networks:
@@ -132,14 +132,14 @@ services:
       - "3304:3306"
     expose:
       - "3304"    
-#  redis:
-#    image: redis
-#    networks:
-#      - myp-network
-#    ports:
-#      - "6379:6379"
-#    expose:
-#      - "6379"
+  redis:
+    image: redis
+    networks:
+      - myp-network
+    ports:
+      - "6379:6379"
+    expose:
+      - "6379"
                 
 networks:
   myp-network:
