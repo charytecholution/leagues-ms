@@ -30,9 +30,6 @@ import com.makeurpicks.domain.OAuthClientDetailsBuilder;
 import com.makeurpicks.exception.OAuthclientValidationException;
 import com.makeurpicks.exception.OAuthclientValidationException.OAuthClientExceptions;
 
-//@RunWith(SpringJUnit4ClassRunner.class)
-//@SpringApplicationConfiguration(classes = AuthServerApplication.class)
-@RunWith(MockitoJUnitRunner.class)
 
 
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -49,7 +46,7 @@ public class OAuthServiceTest {
 	//@InjectMocks
 	//@DataJpaTest
 	@Mock
-	public ClientDetailsDAO clientDetailsDAO;
+	public ClientDetailsDAO clientDetailsDAOMock;
 	
 
 	@Rule
@@ -81,7 +78,7 @@ public class OAuthServiceTest {
 		
 		stubReturnList.add(oAuthClientDetails1);
 		stubReturnList.add(oAuthClientDetails2);
-		when(clientDetailsDAO.findAll()).thenReturn(stubReturnList);
+		when(clientDetailsDAOMock.findAll()).thenReturn(stubReturnList);
 		Iterable<OAuthClientDetails > clients=oAuthClientService.findAllClients();
 		List<OAuthClientDetails> oauthclientdetailslist=new ArrayList<OAuthClientDetails>();
 		if(clients!=null){
