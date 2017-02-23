@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -192,7 +193,7 @@ public class OAuthServiceTest {
 		
 	//	ClientDetails clientDetails=oAuthClientService.loadClientByClientId(oAuthClientDetails.getClientId());
 		//when(oAuthClientService.loadClientByClientId(oAuthClientDetails.getClientId())).thenReturn(clientDetails);
-		
+		verify(clientDetailsDAOMock).save(oAuthClientDetails);
 		assertNotNull(output);
 		assertNotNull(output.getClientSecret());
 
@@ -291,7 +292,7 @@ public class OAuthServiceTest {
 		oAuthList.add(oAuthClientDetails1);
 		oAuthList.add(oAuthClientDetails2);
 		List<OAuthClientDetails> resultList=oAuthClientService.createOAuthClientDetailsList(oAuthList);
-		
+		verify(clientDetailsDAOMock).save(oAuthList);
 		
 		assertThat(resultList.size()==2);
 		

@@ -1,10 +1,9 @@
 package com.makeurpicks.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.fail;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import org.junit.Before;
@@ -16,10 +15,9 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureTestDatabase;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.makeurpicks.dao.PlayerDao;
-import com.makeurpicks.domain.OAuthClientDetails;
-import com.makeurpicks.domain.OAuthClientDetailsBuilder;
 import com.makeurpicks.domain.Player;
 import com.makeurpicks.domain.PlayerBuilder;
 import com.makeurpicks.exception.PlayerValidationException;
@@ -39,9 +37,9 @@ public class PlayerServiceTest {
 	@Rule
 	public ExpectedException expectedEx = ExpectedException.none();
 	
-	/*@Autowired
-	@InjectMocks
-	private PasswordEncoder encoder;*/
+	@Autowired
+	//@InjectMocks
+	private PasswordEncoder encoder;
 	
 	@Mock
 	public PlayerDao playerDAOMock;
@@ -215,7 +213,7 @@ public class PlayerServiceTest {
 		Player player=new PlayerBuilder("user1", "testuser@gmail.com", inputPassword).build();
 		Player player2=playerService.createPlayer(player);
 		assertNotSame(inputPassword, player2.getPassword());
-		
+		verify(playerDAOMock).save(player);
 		
 	}
 	
