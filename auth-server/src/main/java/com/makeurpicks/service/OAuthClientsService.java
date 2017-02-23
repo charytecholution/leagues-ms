@@ -52,7 +52,7 @@ public class OAuthClientsService implements ClientDetailsService {
 		return ouathClientDetailsList;
 	}
 
-	private void validateClientDetails(OAuthClientDetails ouathClientDetails) throws OAuthclientValidationException {
+	public void validateClientDetails(OAuthClientDetails ouathClientDetails) throws OAuthclientValidationException {
 		List<OAuthClientExceptions> codes = new ArrayList<OAuthClientExceptions>();
 		if (ouathClientDetails == null)
 			throw new OAuthclientValidationException();
