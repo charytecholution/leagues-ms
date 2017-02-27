@@ -26,6 +26,10 @@
 		      url: "/seasons",
 		      templateUrl: "createSeasons.html"
 		    })
+		    .state('client', {
+		      url: "/client",
+		      templateUrl: "createClients.html"
+		    })
 		});
 	
 	app.directive('chrome', function() {
@@ -104,7 +108,18 @@
 			templateUrl: 'partials/playersInLeague.html'
 		};
 	});
-	
+	app.directive('createClient', function() {
+		return {
+			restrict: 'E',
+			templateUrl: 'partials/createClient.html'
+		};
+	});
+	app.directive('clients', function() {
+		return {
+			restrict: 'E',
+			templateUrl: 'partials/clients.html'
+		};
+	});
 	
 	app.factory('leagueService', function ($http, $log) {
 	$log.debug('leagueService');
@@ -643,7 +658,97 @@
 //		});
 	})
 	
+	/*************************CLIENT***************************/
 	
+app.controller('CreateClientController', function ($scope, $http, $window, $log, leagueService) {
+		
+		$scope.showclients=true;
+		$scope.client={};
+		$scope.clients={};
+		$scope.client.name = "";
+		$scope.client.authentication="";
+		$scope.client.authenticationid = "";
+		$scope.client.clientId = "";
+		$scope.client.client_secret = "";
+		$scope.client.authenticationid = "";
+		$scope.client.scope= "";
+		$scope.client.authorized_grant_types = "";
+		$scope.client.web_server_redirect_uri ="";
+		$scope.client.authorities = "";
+		$scope.client.refresh_token_validity=3600;
+		$scope.client.access_token_validity=3600;
+		$scope.client.autoapprove="true";
+		//$scope.season.endYear = 2018;
+		$scope.autoapprove = [
+		    { name: 'True',    selected: true },
+		    { name: 'False',   selected: false }
+		    
+		  ];
+		
+		$http.get('/admin/auth/players/getallclientdetails/').success(function(data) {
+			$scope.clients = data;
+		//	alert("Data is:"+$scope.client);
+			if (data[0] === undefined)
+				$scope.showclients=false;
+		});
+		
+	/*	$http.get('/admin/leagues/types').success(function(data) {
+			if (data[0] )
+				$scope.season.leagueTypes=data;
+		});*/
+		
+		/*this.deleteSeason = function(season) {
+			$log.debug("CreateSeasonController:deleteSeason: season.id="+season.id);
+			
+			if (confirm("Are yoou sure you want to delete season?")) {
+		    
+				var url = '/admin/leagues/seasons/'+season.id;
+				$http({
+					method : "DELETE",
+					url : url,
+					contentType : "application/json",
+					dataType : "json",
+				}).success(function(res) { 
+					
+					$http.get('/admin/leagues/seasons/current').success(function(data) {
+						$scope.seasons = data;
+						if (data[0] === undefined)
+							$scope.showseasons=false;
+					});
+					
+				}).error(function(res) {
+					alert('fail');
+				});
+			
+		 
+		    }
+		}
+		*/
+		this.addClient = function() {
+
+		
+			$log.debug("CreateClientController:createClient");
+			
+			$http({
+				method : "PUT",
+				url : '/admin/auth/players/',
+				contentType : "application/json",
+				dataType : "json",
+				data : JSON.stringify($scope.client)
+			}).success(function(res) { 
+				
+				$scope.showclients=true;
+				$http.get('/admin/auth/players/getallclientdetails').success(function(data) {
+					$scope.clients = data;
+				});
+				$window.location.href = '/admin/#/client';
+				
+			}).error(function(res) {
+				//alert('fail');
+			});
+			
+		}
+	});
 	
 	
 })();

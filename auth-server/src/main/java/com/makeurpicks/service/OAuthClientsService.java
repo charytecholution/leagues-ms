@@ -13,12 +13,14 @@ import org.springframework.stereotype.Service;
 
 import com.makeurpicks.dao.ClientDetailsDAO;
 import com.makeurpicks.domain.OAuthClientDetails;
+import com.makeurpicks.exception.OAuthclientValidationException;
 import com.makeurpicks.exception.OAuthclientValidationException.OAuthClientExceptions;
 import com.makeurpicks.exception.PlayerValidationException;
-import com.makeurpicks.exception.PlayerValidationException.PlayerExceptions;
 
 @Service
 public class OAuthClientsService implements ClientDetailsService {
+	
+	//private static Logger _LOGGER=Logger.getLogger(OAuthClientsService.class);
 
 	@Override
 	public ClientDetails loadClientByClientId(String clientId) throws ClientRegistrationException {
@@ -32,7 +34,7 @@ public class OAuthClientsService implements ClientDetailsService {
 	@Autowired
 	private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-	public OAuthClientDetails createOAuthClientDetails(OAuthClientDetails ouathClientDetails) {
+	public OAuthClientDetails createOAuthClientDetails(OAuthClientDetails ouathClientDetails) throws OAuthclientValidationException {
 		validateClientDetails(ouathClientDetails);
 		String encodedPassword = passwordEncoder.encode(ouathClientDetails.getClient_secret());
 		ouathClientDetails.setClient_secret(encodedPassword);
@@ -40,7 +42,7 @@ public class OAuthClientsService implements ClientDetailsService {
 		return ouathClientDetails;
 	}
 
-	public List<OAuthClientDetails> createOAuthClientDetailsList(List<OAuthClientDetails> ouathClientDetailsList) {
+	public List<OAuthClientDetails> createOAuthClientDetailsList(List<OAuthClientDetails> ouathClientDetailsList) throws OAuthclientValidationException {
 		for (OAuthClientDetails oAuthClientDetails : ouathClientDetailsList) {
 			validateClientDetails(oAuthClientDetails);
 			String encodedPassword = passwordEncoder.encode(oAuthClientDetails.getClient_secret());
@@ -50,12 +52,13 @@ public class OAuthClientsService implements ClientDetailsService {
 		return ouathClientDetailsList;
 	}
 
-	private void validateClientDetails(OAuthClientDetails ouathClientDetails) {
+	public void validateClientDetails(OAuthClientDetails ouathClientDetails) throws OAuthclientValidationException {
 		List<OAuthClientExceptions> codes = new ArrayList<OAuthClientExceptions>();
 		if (ouathClientDetails == null)
-			throw new PlayerValidationException();
+			throw new OAuthclientValidationException();
 
 		if (ouathClientDetails.getClientId() == null || "".equals(ouathClientDetails.getClientId()))
+			//codes.add(OAuthClientExceptions.CLIENT_ID_NULL);
 			codes.add(OAuthClientExceptions.CLIENT_ID_NULL);
 
 		if (ouathClientDetails.getAuthorized_grant_types() == null
@@ -69,8 +72,24 @@ public class OAuthClientsService implements ClientDetailsService {
 				|| ouathClientDetails.getWeb_server_redirect_uri().size() == 0)
 			codes.add(OAuthClientExceptions.REDIRECT_URI_NULL_OR_EMPTY);
 
-		if (!codes.isEmpty())
-			throw new PlayerValidationException(codes.toArray(new PlayerExceptions[codes.size()]));
+		if (!codes.isEmpty()){
+		//	System.out.println("Codes size is:"+codes.size());
+			throw new OAuthclientValidationException(codes);
+			//throw new PlayerValidationException(codes.toArray());
+		}
+			
 	}
+	
+	/**
+	 * This method is used to get all the client details
+	 * @return
+	 * @throws ClientRegistrationException
+	 */
+	public Iterable<OAuthClientDetails> findAllClients() throws ClientRegistrationException {
+		
+		
+		return dao.findAll();
+	}
+
 
 }
