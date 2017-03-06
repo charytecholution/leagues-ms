@@ -7,9 +7,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -26,6 +28,9 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import com.makeurpicks.domain.Player;
@@ -45,6 +50,22 @@ public class AuthServerApplication extends WebMvcConfigurerAdapter implements Co
         SpringApplication.run(AuthServerApplication.class, args);
     }
 	
+	
+	 
+	 
+	 @Bean
+		public FilterRegistrationBean corsFilter() {
+			UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+			CorsConfiguration config = new CorsConfiguration();
+			config.setAllowCredentials(true);
+			config.addAllowedOrigin("*");
+			config.addAllowedHeader("*");
+			config.addAllowedMethod("*");
+			source.registerCorsConfiguration("/**", config);
+			FilterRegistrationBean bean = new FilterRegistrationBean(new CorsFilter(source));
+			bean.setOrder(Ordered.HIGHEST_PRECEDENCE);
+			return bean;
+		}
 	@Configuration
     @EnableWebSecurity
     @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -82,7 +103,7 @@ public class AuthServerApplication extends WebMvcConfigurerAdapter implements Co
 //                    .roles("USER", "ADMIN")
 //            ;
 //        }
-
+		
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             http
@@ -92,8 +113,7 @@ public class AuthServerApplication extends WebMvcConfigurerAdapter implements Co
 
                     .httpBasic().disable()
                     .anonymous().disable()
-                    .authorizeRequests().anyRequest().authenticated()
-            ;
+                    .authorizeRequests().anyRequest().authenticated();
         }
 		@Override
 		public void configure(WebSecurity web) throws Exception {
@@ -121,6 +141,11 @@ public class AuthServerApplication extends WebMvcConfigurerAdapter implements Co
     	
         @Value("${config.oauth2.admin-uri}")
         private String admin;
+        @Value("${config.oauth2.admin-ssluri}")
+        private String adminssl;
+        
+        @Value("${config.oauth2.localadmin-uri:http://localhost:9000/admin/}")
+        private String localadmin;
         
 
         @Bean
@@ -179,7 +204,7 @@ public class AuthServerApplication extends WebMvcConfigurerAdapter implements Co
                     .withClient("confidential").secret("secret")
                     .authorizedGrantTypes("client_credentials", "authorization_code", "refresh_token")
                     .scopes("read", "write")
-                    .redirectUris(admin).autoApprove(true)
+                    .redirectUris(admin,localadmin,adminssl).autoApprove(true)
 
                     .and()
                     
@@ -204,7 +229,8 @@ public class AuthServerApplication extends WebMvcConfigurerAdapter implements Co
                     .authorizedGrantTypes("client_credentials", "password", "authorization_code", "refresh_token")
                     .scopes("read", "write")
                     .redirectUris("http://localhost:9000/").autoApprove(true)
-            ;
+                   ;
+            
         }
 
     }

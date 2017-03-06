@@ -59,7 +59,7 @@ public class LeagueController {
 	public @ResponseBody List<League> getLeagueBySeasonId(@PathVariable String id) {
 		return leagueService.getLeagueBySeasonId(id);
 	}
-
+  
 	@RequestMapping(method = RequestMethod.POST, value = "/")
 	public @ResponseBody League createLeague(Principal user,
 			@RequestBody League league) {

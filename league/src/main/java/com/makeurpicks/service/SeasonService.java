@@ -42,6 +42,11 @@ public class SeasonService {
 		return s;
 	}
 	
+	public List<Season> getSeasonsByLeague(String league)
+	{
+		return seasonRepository.getSeasonsByLeagueType(league);
+	}
+	
 	public Season createSeason(Season season)
 	{
 	
