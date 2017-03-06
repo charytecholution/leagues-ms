@@ -58,7 +58,7 @@ public class PlayerService implements UserDetailsService {
 		return player;
 	}
 	
-	private void validatePlayer(Player player)
+	public void validatePlayer(Player player)
 	{
 		List<PlayerExceptions> codes = new ArrayList<PlayerExceptions>();
 		

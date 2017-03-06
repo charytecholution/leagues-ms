@@ -1,15 +1,13 @@
 ---
 applications:
 - name: league
-  memory: 512M 
+  memory: 1G 
   instances: 1
-  host: league
+  host: league-myp
   path: ./target/league-0.0.1.jar
   services:
-  - redis-myp
-  - amqp-myp
-  - auth-token-key
   - eureka-service
   - config-service
+  - league-mysql
   env:
-   JAVA_OPTS: -Djava.security.egd=file:///dev/urandom
+   JAVA_OPTS: -Djava.security.egd=file:///dev/urandom -Dspring.profiles.active=techopcf
