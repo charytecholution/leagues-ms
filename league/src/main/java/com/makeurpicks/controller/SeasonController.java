@@ -27,6 +27,13 @@ public class SeasonController {
 	{
 		return seasonService.getCurrentSeasons();
 	}
+	@RequestMapping(method=RequestMethod.GET, value="/leagueType/{leagueId}")
+	public @ResponseBody List<Season> getSeasonsByLeague(@PathVariable String leagueId)
+	{
+		return seasonService.getSeasonsByLeague(leagueId);
+	}
+	
+	
 	
 	
 	@RequestMapping(method=RequestMethod.POST, value="/")
