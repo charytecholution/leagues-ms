@@ -55,11 +55,11 @@ public class LeagueController {
 		return leagueService.getLeagueById(id);
 	}
 	
-	@RequestMapping(method = RequestMethod.GET, value = "/seasons/{seasonId}")
-	public @ResponseBody List<League> getLeagueBySeasonId(@PathVariable String seasonId) {
-		return leagueService.getLeagueBySeasonId(seasonId);
+	@RequestMapping(method = RequestMethod.GET, value = "/seasonid/{id}")
+	public @ResponseBody List<League> getLeagueBySeasonId(@PathVariable String id) {
+		return leagueService.getLeagueBySeasonId(id);
 	}
-	
+  
 	@RequestMapping(method = RequestMethod.POST, value = "/")
 	public @ResponseBody League createLeague(Principal user,
 			@RequestBody League league) {

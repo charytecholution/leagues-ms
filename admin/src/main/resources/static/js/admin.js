@@ -120,16 +120,11 @@
 			templateUrl: 'partials/playersInLeague.html'
 		};
 	});
-	app.directive('createClient', function() {
+	
+	app.directive('listleaguesOnseason', function() {
 		return {
 			restrict: 'E',
-			templateUrl: 'partials/createClient.html'
-		};
-	});
-	app.directive('clients', function() {
-		return {
-			restrict: 'E',
-			templateUrl: 'partials/clients.html'
+			templateUrl: 'partials/listleaguesOnseason.html'
 		};
 	});
 	
@@ -250,51 +245,45 @@
 	
 		$scope.league = {};
 		$scope.season = {};
+		$scope.leaguesBySeason = {};
 		$scope.showgames=true;
 		$scope.hideplayers=false;
+		$scope.leaguesBySeason.leagueTypes = [];
+		
 		
 		leagueService.getLeagues().then(function(data) {
 			$scope.leagues = data;
 		});
 		
 		$http.get('/admin/leagues/types').success(function(data) {
-			if (data[0] )
-				$scope.league.leagueTypes=data;
+			var arrayLength = data.length;
+			for (var i = 0; i < arrayLength; i++) {
+				$scope.leaguesBySeason.leagueTypes.push(data[i]);
+			}
 		});
 		
-		$scope.refreshSeason = function()
-		{
-			if($scope.league.leagueType)
-			{
-				$http.get('/admin/leagues/seasons/leagueType/'+$scope.league.leagueType).success(function(data) {
-					
-					console.log("success "+JSON.stringify(data));
-					if (data[0] === undefined)
-						$scope.showgames=false;
-					else 
-					 $scope.league.seasons = data;
-				}).error(function(res) {
-					console.log('fetching  seasons failed'+res);
-				});
-			}
-		}
+		$scope.$watch('leaguesBySeason.leagueType', function (newValue, oldValue, scope) {
+		$http.get('/admin/leagues/seasons/leaguetypes/'+$scope.leaguesBySeason.leagueType).success(function(data) {
+			$scope.allseasons = data;
+		});
+		});
 		
-		$scope.refreshLeagues = function()
-		{
-			if($scope.league.seasons)
-			{
-				$http.get('/admin/leagues/seasons/'+$scope.league.seasons).success(function(data) {
-					
-					if (data[0] === undefined)
-						$scope.showgames=false;
-					else 
-					 $scope.league.leagues = data;
-				}).error(function(res) {
-					console.log('falied'+res);
-				});
-			}
-		}
+		$scope.$watch('leaguesBySeason.seasonId', function (newValue, oldValue, scope) {
+			$http.get('/admin/leagues/seasonid/'+$scope.leaguesBySeason.seasonId).success(function(data) {
+				$scope.seasonalLeagues = data;
+			});
+			});
+		
+//		$scope.$watch('league.seasonId', function (newValue, oldValue, scope) {
+//			$http.get('/admin/leagues/seasons/'+$scope.league.seasonId).success(function(data) {
+//				$scope.leaguesBySeason.leagueTypes = [];
+//				$scope.leaguesBySeason.leagueTypes.push(data.leagueType);
+//			});
+//			
+//		});
+//		
 		$http.get('/admin/leagues/seasons/current').success(function(data) {
+//			console.log(JSON.stringify(data));
 			$scope.seasons = data;
 			if (data[0] === undefined)
 				$scope.showgames=false;
@@ -305,6 +294,13 @@
 		$scope.season.startYear = 2016;
 		$scope.season.endYear = 2017;
 		$scope.season.leagueType = "pickem";
+		
+		this.getReqLeagues = function(){
+			$http.get('/admin/leagues/seasonid/'+$scope.leaguesBySeason.seasonId).success(function(data) {
+//				console.log(data);
+				$scope.leagueValues = data;
+			});
+		}
 		
 		
 		this.addLeague = function() {
