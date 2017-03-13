@@ -20,11 +20,13 @@ public class LeagueIntegrationService {
 	@Autowired
     @Qualifier("loadBalancedRestTemplate")
     @LoadBalanced
-    RestTemplate restTemplate;
-	
-	@Autowired
+   // RestTemplate restTemplate;
+	public RestTemplate restTemplate() {
+	    return new RestTemplate();
+	}
+	/*@Autowired
     @LoadBalanced
-    private OAuth2RestOperations secureRestTemplate;
+    private OAuth2RestOperations secureRestTemplate;*/
 
     @HystrixCommand(fallbackMethod = "stubLeague",
             commandProperties = {
@@ -33,7 +35,8 @@ public class LeagueIntegrationService {
     )
 	public @ResponseBody LeagueView getLeagueById(String id)
 	{
-    	final LeagueView response = secureRestTemplate.getForObject("http://league/leagues/{id}", LeagueView.class, id);
+    	//final LeagueView response = secureRestTemplate.getForObject("http://league/leagues/{id}", LeagueView.class, id);
+    	final LeagueView response = null;
         return response;
 	}
     

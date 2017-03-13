@@ -25,9 +25,9 @@ public class GameIntegrationService {
     @LoadBalanced
     RestTemplate restTemplate;
 
-	@Autowired
+	/*@Autowired
     @LoadBalanced
-    private OAuth2RestOperations secureRestTemplate;
+    private OAuth2RestOperations secureRestTemplate;*/
 	
     @HystrixCommand(fallbackMethod = "stubGame",
             commandProperties = {
