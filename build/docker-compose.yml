@@ -103,6 +103,42 @@ services:
       - auth-server
       - config-server
       - game-db
+#  admin:
+#    build: ../admin/
+#    networks:
+#      - myp-network
+#    ports:
+#      - "9000:9000"
+#    expose:
+#      - "9000"
+#    links:
+#      - eureka:eureka
+#      - auth-server:auth-server
+#      - config-server:config-server
+#    depends_on:
+#      - eureka
+#      - auth-server
+#      - config-server
+#    restart: always
+#  league:
+#    build: ../league/
+#    networks:
+#      - myp-network
+#    ports:
+#      - "8081:8081"
+#    expose:
+#      - "8081"
+#    restart: always
+#    links:
+#      - eureka:eureka
+#      - auth-server:auth-server
+#      - config-server:config-server
+#      - league-db:league-db
+#    depends_on:
+#      - eureka
+#      - auth-server
+#      - config-server
+#      - league-db
   game-db:  
     image: mysql:latest
     environment:

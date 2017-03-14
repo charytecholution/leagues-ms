@@ -5,6 +5,8 @@ server:
 spring:
   profiles:
     active: dev
+  #profiles:
+  #  active: techopcf
   jpa:
     show-sql: true
     hibernate:

@@ -97,7 +97,7 @@ public class WeekServiceTest {
 		assertTrue(weeks.contains(weeka));
 		assertTrue(weeks.contains(weekb));
 	}
-	
+
 
 	@Test
 	public void testGetWeeksBySeasonWhichDoesNotExist() {
