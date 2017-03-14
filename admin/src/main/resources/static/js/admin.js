@@ -150,7 +150,7 @@
 	app.controller('ChromeController', function ($http, $scope,$location) {
 		$http.get('/admin/user').success(function(data) {
 			$scope.user = data.name;
-			$scope.authserverlogout = data.authserverlogout;
+			console.log($scope.user);
 		});
 		
 		$scope.logout = function () {
@@ -241,7 +241,7 @@
 	});
 	
 	//***************  LEAGUES  **************************
-	app.controller('CreateLeagueController', function ($scope, $http, $window, $log, leagueService) {
+	app.controller('CreateLeagueController', function ($scope, $http, $window,$location,$log, leagueService) {
 	
 		$scope.league = {};
 		$scope.season = {};
@@ -293,7 +293,7 @@
 		
 		$scope.season.startYear = 2016;
 		$scope.season.endYear = 2017;
-		$scope.season.leagueType = "pickem";
+		$scope.season.leagueType = ["pickem"];
 		
 		this.getReqLeagues = function(){
 			$http.get('/admin/leagues/seasonid/'+$scope.leaguesBySeason.seasonId).success(function(data) {
@@ -331,8 +331,31 @@
 			
 			$http.get('/admin/leagues/player/leagueid/'+leagueId).success(function(data) {
 				$scope.players = data;
+				$scope.playerLeagueId = leagueId;
 				
 			});
+		}
+		
+		$scope.removePlayerFromLeague= function(player){
+			$log.debug("CreateLeagueController:removePlayerFromLeague: playerLeagueId"+$scope.playerLeagueId+": player="+player);
+			$http({
+				method : "DELETE",
+				url : "/admin/leagues/player/league/"+$scope.playerLeagueId+"/"+player,
+				contentType : "application/json",
+				dataType : "json",
+			}).success(function(res) {
+				if(res == false){
+					alert("Cannot delete creater from league");
+				}else{
+					alert("Successfully removed Player from League");
+					$window.location.reload();
+				}
+			}).error(function(res) {
+				alert('fail');
+			});
+		
+	 
+			
 		}
 		
 	
