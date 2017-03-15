@@ -2,6 +2,7 @@ package com.makeurpicks.service;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -235,6 +236,18 @@ public class WeekServiceTest {
 		weekService.createWeek(week1);
 	}
 
+	private Week createWeek(String seasonId, int weekNumber)
+	{
+		Week week = new WeekBuilder()
+			.withSeasonId(seasonId)
+			.withWeekNumber(weekNumber)
+			.build();
+		
+		weekService.createWeek(week);
+		
+		return week;	
+	}
+	
 	private Week createWeek(String seasonId, int weekNumber)
 	{
 		Week week = new WeekBuilder()
