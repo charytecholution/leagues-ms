@@ -40,6 +40,7 @@ public class LeagueController {
 
 	@RequestMapping(method = RequestMethod.GET, value = "/")
 	public @ResponseBody Iterable<League> getAllLeague() {
+		log.debug("In ------------------------ League Controller ");
 		return leagueService.getAllLeagues();
 
 	}
@@ -122,6 +123,17 @@ public class LeagueController {
 	public @ResponseBody boolean deleteLeague(@PathVariable String id) {
 		leagueService.deleteLeague(id);
 		return true;
+	}
+	
+	@RequestMapping(method = RequestMethod.DELETE, value = "/player/league/{leagueid}/{playerid}")
+	public @ResponseBody boolean deletePlayerFromLeague(@PathVariable String leagueid, @PathVariable String playerid) {
+		League league = leagueService.getLeagueById(leagueid);
+		if(league.getAdminId().equals(playerid)){
+			return false;
+		}else {
+			leagueService.removePlayerFromLeague(leagueid, playerid);
+			return true;
+		}
 	}
 
 }

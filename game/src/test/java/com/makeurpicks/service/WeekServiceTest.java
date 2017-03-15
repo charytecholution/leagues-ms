@@ -98,7 +98,7 @@ public class WeekServiceTest {
 		assertTrue(weeks.contains(weeka));
 		assertTrue(weeks.contains(weekb));
 	}
-	
+
 
 	@Test
 	public void testGetWeeksBySeasonWhichDoesNotExist() {
@@ -236,16 +236,16 @@ public class WeekServiceTest {
 		weekService.createWeek(week1);
 	}
 
-
-	@Test
-	public void createWeekShouldCallSaveOnWeekRepository() {
-		String seasonId = UUID.randomUUID().toString();
-		int weekNumber = (int) (Math.random() + 1);
-		Week week = new WeekBuilder().withSeasonId(seasonId).withWeekNumber(weekNumber).build();
-
+	private Week createWeek(String seasonId, int weekNumber)
+	{
+		Week week = new WeekBuilder()
+			.withSeasonId(seasonId)
+			.withWeekNumber(weekNumber)
+			.build();
+		
 		weekService.createWeek(week);
-
-		verify(weekRepositoryMock).save(week);
+		
+		return week;	
 	}
 	
 	private Week createWeek(String seasonId, int weekNumber)
