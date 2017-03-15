@@ -1,5 +1,7 @@
 package com.makeurpicks.service;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -47,10 +49,7 @@ public class WeekServiceTest {
 	@Before
 	public void setup() {
 		MockitoAnnotations.initMocks(this);
-	
-	@Rule
-	public ExpectedException expectedEx = ExpectedException.none();
-	
+	}
 	
 	@Test
 	public void testGetWeeksBySeason() {
@@ -65,11 +64,11 @@ public class WeekServiceTest {
 		Week weeka = createWeek(s2016, 1);
 		Week weekb = createWeek(s2016, 2);
 		
-		when(weekRepository.save(week1)).thenReturn(week1);
-		when(weekRepository.save(week2)).thenReturn(week2);
-		when(weekRepository.save(week3)).thenReturn(week3);
-		when(weekRepository.save(weeka)).thenReturn(weeka);
-		when(weekRepository.save(weekb)).thenReturn(weekb);
+		when(weekRepositoryMock.save(week1)).thenReturn(week1);
+		when(weekRepositoryMock.save(week2)).thenReturn(week2);
+		when(weekRepositoryMock.save(week3)).thenReturn(week3);
+		when(weekRepositoryMock.save(weeka)).thenReturn(weeka);
+		when(weekRepositoryMock.save(weekb)).thenReturn(weekb);
 		
 		List<Week> weeks2015 = new ArrayList<>();
 		weeks2015.add(week1);
@@ -80,8 +79,8 @@ public class WeekServiceTest {
 		weeks2016.add(weeka);
 		weeks2016.add(weekb);
 		
-		when(weekRepository.findBySeasonId(s2015)).thenReturn(weeks2015);
-		when(weekRepository.findBySeasonId(s2016)).thenReturn(weeks2016);
+		when(weekRepositoryMock.findBySeasonId(s2015)).thenReturn(weeks2015);
+		when(weekRepositoryMock.findBySeasonId(s2016)).thenReturn(weeks2016);
 		
 		List<Week> weeks = weekService.getWeeksBySeason(s2015);
 		assertTrue(weeks.contains(week1));
@@ -108,7 +107,7 @@ public class WeekServiceTest {
 		List<Week> weeks22017 = new ArrayList<>();
 
 		// find a week which doesn't exist and it should return empty list
-		when(weekRepository.findBySeasonId(weekId22017)).thenReturn(weeks22017);
+		when(weekRepositoryMock.findBySeasonId(weekId22017)).thenReturn(weeks22017);
 
 		List<Week> weeks = weekService.getWeeksBySeason(weekId22017);
 		assertTrue(weeks.isEmpty());
@@ -233,7 +232,7 @@ public class WeekServiceTest {
 		List<Week> weeks = new ArrayList<>();
 		weeks.add(week1);
 
-		when(weekRepository.findBySeasonId(s2015)).thenReturn(weeks);
+		when(weekRepositoryMock.findBySeasonId(s2015)).thenReturn(weeks);
 		weekService.createWeek(week1);
 	}
 
@@ -247,5 +246,17 @@ public class WeekServiceTest {
 		weekService.createWeek(week);
 
 		verify(weekRepositoryMock).save(week);
+	}
+	
+	private Week createWeek(String seasonId, int weekNumber)
+	{
+		Week week = new WeekBuilder()
+			.withSeasonId(seasonId)
+			.withWeekNumber(weekNumber)
+			.build();
+		
+		weekService.createWeek(week);
+		
+		return week;	
 	}
 }
