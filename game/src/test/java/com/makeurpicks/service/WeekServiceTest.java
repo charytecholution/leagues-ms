@@ -247,16 +247,4 @@ public class WeekServiceTest {
 		
 		return week;	
 	}
-	
-	private Week createWeek(String seasonId, int weekNumber)
-	{
-		Week week = new WeekBuilder()
-			.withSeasonId(seasonId)
-			.withWeekNumber(weekNumber)
-			.build();
-		
-		weekService.createWeek(week);
-		
-		return week;	
-	}
 }
