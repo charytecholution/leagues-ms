@@ -15,8 +15,8 @@ spring:
         dialect: org.hibernate.dialect.MySQL5Dialect
   datasource:
     url: jdbc:mysql://localhost:3304/league
-    username: root
-    password: admin123
+    username: dbuser
+    password: password
     #url: jdbc:mysql://localhost:3306/cf_0619e413_5337_476d_98b7_2e1d996aa224
     #username: root
     #password: admin123
