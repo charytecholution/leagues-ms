@@ -24,6 +24,9 @@
 </dependencyManagement>
 
 	<modules>
+		<module>../server-eureka</module>
+		<module>../server-config</module>
+		<module>../auth-server</module>
 <!-- 		<module>../game</module> -->
 <!-- 		<module>../league</module> -->
 <!-- 		<module>../pick</module> -->

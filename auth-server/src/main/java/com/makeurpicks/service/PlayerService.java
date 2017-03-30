@@ -79,4 +79,16 @@ public class PlayerService implements UserDetailsService {
 			throw new PlayerValidationException(codes.toArray(new PlayerExceptions[codes.size()]));
 	}
 
+
+	public PasswordEncoder getPasswordEncoder() {
+		return passwordEncoder;
+	}
+
+
+	public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
+		this.passwordEncoder = passwordEncoder;
+	}
+
+	
+	
 }
