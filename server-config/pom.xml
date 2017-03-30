@@ -46,6 +46,9 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+			
+			
+
 		</plugins>
 	</build>
 	<!-- BEGIN: Specific to mapping unit tests and covered code -->

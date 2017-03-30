@@ -9,20 +9,19 @@
 	<parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>1.4.2.RELEASE</version>
-	</parent>
-	
-	<dependencyManagement>
-	    <dependencies>
-	        <dependency>
-	            <groupId>org.springframework.cloud</groupId>
-	            <artifactId>spring-cloud-dependencies</artifactId>
-	            <version>Camden.RELEASE</version>
-	            <type>pom</type>
-	            <scope>import</scope>
-	        </dependency>
-	    </dependencies>
-	</dependencyManagement>
+    <version>1.4.5.RELEASE</version>
+</parent>
+<dependencyManagement>
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-dependencies</artifactId>
+            <version>Camden.SR6</version>
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>
+    </dependencies>
+</dependencyManagement>
 
 	<modules>
 <!-- 		<module>../game</module> -->
@@ -39,7 +38,29 @@
 		<java.version>1.8</java.version>
 	</properties>
 	
-	<repositories>
+	<build>
+		<plugins>
+			<plugin>
+    <groupId>com.spotify</groupId>
+    <artifactId>docker-maven-plugin</artifactId>
+    <version>0.2.3</version>
+<!--     <executions> -->
+<!--         <execution> -->
+<!--             <phase>package</phase> -->
+<!--             <goals> -->
+<!--                 <goal>build</goal> -->
+<!--             </goals> -->
+<!--         </execution> -->
+<!--     </executions> -->
+    <configuration>
+        <dockerDirectory>${project.basedir}</dockerDirectory>
+        <imageName>myp/${project.artifactId}</imageName>
+    </configuration>
+</plugin>
+		</plugins>
+	</build>
+	
+	<!-- <repositories>
 		<repository>
 			<id>spring-snapshots</id>
 			<name>Spring Snapshots</name>
@@ -74,5 +95,5 @@
 				<enabled>false</enabled>
 			</snapshots>
 		</pluginRepository>
-	</pluginRepositories>
+	</pluginRepositories> -->
 </project>
