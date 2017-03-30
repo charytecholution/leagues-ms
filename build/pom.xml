@@ -57,7 +57,7 @@
 <!--     </executions> -->
     <configuration>
         <dockerDirectory>${project.basedir}</dockerDirectory>
-        <imageName>myp/${project.artifactId}</imageName>
+        <imageName>http://ec2-54-209-199-61.compute-1.amazonaws.com:8123/repository/TecholutionDockerRepo//myp/${project.artifactId}</imageName>
     </configuration>
 </plugin>
 		</plugins>
