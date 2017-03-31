@@ -8,8 +8,6 @@ server:
     port: 9999
     context-path: /auth
 
-   
-
 config:
    oauth2:
 #        ui-uri: ${vcap.services.ui-service.credentials.uri:http://localhost:8080/}
