@@ -2,7 +2,7 @@ version: "2"
 
 services:
   config-server:
-    image: myp/config-server
+    image: nexus.techolution.com:8123/myp/config-server
     networks:
       - myp-network
     ports:
@@ -10,7 +10,7 @@ services:
     expose:
       - "8888"
   eureka:
-    image: myp/eureka
+    image: nexus.techolution.com:8123/myp/eureka
     networks:
       - myp-network
     ports:
@@ -18,7 +18,7 @@ services:
     expose:
       - "8761"
   auth:
-    image: myp/auth-server
+    image: nexus.techolution.com:8123/myp/auth-server
     networks:
       - myp-network
     ports:
@@ -32,7 +32,7 @@ services:
       - auth-db
       - eureka
   league:
-    image: myp/league
+    image: nexus.techolution.com:8123/myp/league
     networks:
       - myp-network
     ports:
@@ -51,7 +51,7 @@ services:
       - config-server
       - league-db
   game:
-    image: myp/game
+    image: nexus.techolution.com:8123/myp/game
     networks:
       - myp-network
     ports:
@@ -70,7 +70,7 @@ services:
       - config-server
       - game-db
   admin:
-    image: myp/admin
+    image: nexus.techolution.com:8123/myp/admin
     networks:
       - myp-network
     ports:
@@ -89,7 +89,7 @@ services:
       - game
 #    restart: always
   gateway:
-    image: myp/gateway
+    image: nexus.techolution.com:8123/myp/gateway
     networks:
       - myp-network
     ports:
