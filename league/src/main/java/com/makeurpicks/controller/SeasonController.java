@@ -2,6 +2,8 @@ package com.makeurpicks.controller;
 
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,12 +23,22 @@ public class SeasonController {
 
 	@Autowired
 	private SeasonService seasonService;
+	
+	Log log =  LogFactory.getLog(SeasonController.class);
 		
 	@RequestMapping(method=RequestMethod.GET, value="/current")
 	public @ResponseBody List<Season> getCurrentSeasons()
 	{
+		log.debug("Season Control ----- ");
 		return seasonService.getCurrentSeasons();
 	}
+	@RequestMapping(method=RequestMethod.GET, value="/leagueType/{leagueId}")
+	public @ResponseBody List<Season> getSeasonsByLeague(@PathVariable String leagueId)
+	{
+		return seasonService.getSeasonsByLeague(leagueId);
+	}
+	
+	
 	
 	
 	@RequestMapping(method=RequestMethod.POST, value="/")
@@ -48,6 +60,18 @@ public class SeasonController {
 	public @ResponseBody LeagueType[] getLeagueType()
 	{
 		return LeagueType.values();
+	}
+	
+	@RequestMapping(method=RequestMethod.GET, value="/leaguetypes/{leagueType}")
+	public @ResponseBody List<Season> getSeasonsByLeagueType(@PathVariable String leagueType)
+	{
+		return seasonService.getSeasonsByLeagueType(leagueType);
+	}
+	
+	@RequestMapping(method=RequestMethod.GET, value="/{id}")
+	public @ResponseBody Season getSeasonById(@PathVariable String id)
+	{
+		return seasonService.getSeasonById(id);
 	}
 	
 	@RequestMapping(method=RequestMethod.DELETE, value="/{id}")

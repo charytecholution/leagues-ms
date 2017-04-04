@@ -9,6 +9,7 @@ import org.springframework.cloud.stream.binder.PartitionSelectorStrategy;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.integration.annotation.IntegrationComponentScan;
 import org.springframework.messaging.Message;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -22,6 +23,7 @@ import com.makeurpicks.message.channels.SqlChannels;
 @EnableBinding(SqlChannels.class)
 @SpringBootApplication
 @EnableEurekaClient
+@EnableResourceServer
 @EnableJpaRepositories
 public class LeagueApplication {
 	

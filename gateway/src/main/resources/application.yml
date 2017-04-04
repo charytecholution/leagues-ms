@@ -1,3 +1,8 @@
+spring:
+  application:
+   name: gateway
+  profiles:
+    active: local
 server:
   port: 8080
   
@@ -27,6 +32,19 @@ security:
             hL9dSAZuA8xExjlPmQIDAQAB
             -----END PUBLIC KEY-----
 
+eureka:
+  instance:
+    prefer-ip-address: true
+    hostname: ${vcap.application.uris[0]:127.0.0.1}
+    nonSecurePort: ${vcap.services.eureka-service.credentials.port:${server.port}}
+    leaseRenewalIntervalInSeconds: 10
+    metadataMap:
+      instanceId: ${vcap.application.instance_id:${spring.application.name}:${random.value}}
+  client:
+    serviceUrl:
+      defaultZone: ${vcap.services.eureka-service.credentials.uri:http://127.0.0.1:8761}/eureka/
+
+
 zuul:
 #  host:
 #    socket-timeout-millis: 5000
@@ -35,7 +53,7 @@ zuul:
       path: /leagues/**
       stripPrefix: false
   #    url: http://localhost:9000
-    player:
+    auth:
       path: /register/**
       stripPrefix: true
     pick:
@@ -59,6 +77,9 @@ zuul:
     leader:
       path: /leaders/**
       stripPrefix: false
+#    auth:
+#      path: /register/auth/players/
+#      strip-prefix: true
 
 #hystrix:
 #  command:

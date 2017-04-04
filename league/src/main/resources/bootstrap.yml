@@ -1,7 +1,6 @@
 #  address: 127.0.0.1
+
 spring:
-  application:
-   name: league
   cloud:
     stream:
       bindings:
@@ -12,6 +11,7 @@ spring:
             partition-count: 3
             partition-key-extractor-class: com.makeurpicks.message.service.PartitionkeyExtractorImp
             partition-selector-class: com.makeurpicks.message.service.PartionkeySelectorStrategyImp
+
 encrypt:
   key: ${ENCRYPT_KEY:defaultkey} 
 #  cloud:
@@ -45,3 +45,9 @@ encrypt:
 #    leaseRenewalIntervalInSeconds: 10
 #    metadataMap:
 #      instanceId: league
+logging:
+  level:
+    org.springframework.security: DEBUG
+    org.springframework.cloud.netflix.zuul: INFO
+    com.makeurpicks: DEBUG
+    com.netflix.hystrix: DEBUG

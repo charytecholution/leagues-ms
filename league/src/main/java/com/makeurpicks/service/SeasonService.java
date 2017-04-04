@@ -5,18 +5,24 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.UUID;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.makeurpicks.domain.League;
 import com.makeurpicks.domain.LeagueType;
 import com.makeurpicks.domain.Season;
 import com.makeurpicks.message.channels.SeasonWriter;
+import com.makeurpicks.exception.LeagueValidationException;
+import com.makeurpicks.exception.LeagueValidationException.LeagueExceptions;
 import com.makeurpicks.repository.SeasonRepository;
 
 @Component
 public class SeasonService {
 	
 	private SeasonRepository seasonRepository;
+
 	private  SeasonWriter writer;
 	@Autowired
 	public SeasonService(SeasonRepository seasonRepository,SeasonWriter seasonWriter) {
@@ -24,6 +30,10 @@ public class SeasonService {
 		this.writer= seasonWriter;
 		
 	}
+	
+	Log logs =  LogFactory.getLog(SeasonService.class);
+	
+	
 	public List<Season> getCurrentSeasons()
 	{
 		List<Season> s = new ArrayList<Season>();
@@ -33,6 +43,8 @@ public class SeasonService {
 		
 		for (LeagueType lt : LeagueType.values())
 		{
+			logs.debug("Hello --------------"+lt.toString());
+			
 			Iterable<Season> seasons = seasonRepository.getSeasonsByLeagueType(lt.toString());
 			for (Season season:seasons)
 			{
@@ -42,6 +54,11 @@ public class SeasonService {
 		}
 		
 		return s;
+	}
+	
+	public List<Season> getSeasonsByLeague(String league)
+	{
+		return seasonRepository.getSeasonsByLeagueType(league);
 	}
 	
 	public Season createSeason(Season season)
@@ -59,11 +76,26 @@ public class SeasonService {
 	
 	public Season updateSeason(Season season)
 	{
-		return seasonRepository.save(season);
+		Season seasonValue = seasonRepository.findOne(season.getId());
+		if (seasonValue == null)
+			throw new LeagueValidationException(LeagueExceptions.SEASON_NOT_FOUND);
+		seasonRepository.save(season);
+		return season;
 	}
 	
 	public void deleteSeason(String seasonId)
 	{
+		Season seasonValue = seasonRepository.findOne(seasonId);
+		if (seasonValue == null)
+			throw new LeagueValidationException(LeagueExceptions.SEASON_NOT_FOUND);
 		seasonRepository.delete(seasonId);
+	}
+
+	public Season getSeasonById(String id) {
+		return seasonRepository.findOne(id);
+	}
+
+	public List<Season> getSeasonsByLeagueType(String leagueType) {
+		return seasonRepository.findByLeagueType(leagueType);
 	}
 }

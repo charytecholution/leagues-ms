@@ -16,7 +16,8 @@
 					data : JSON.stringify($scope.player)
 				}).success(function(res) { 
 	
-					$window.location.href = '/index.html';
+					$scope.usererror="success";
+					//$window.location.href = '/index.html';
 					
 				}).error(function(res) {
 					$scope.usererror='Could not register.';
