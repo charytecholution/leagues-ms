@@ -25,64 +25,85 @@ services:
       - "9999:9999"
     expose:
       - "9999"
-    restart: always      
+#    restart: always      
     links:
       - auth-db:auth-db
     depends_on:
       - auth-db
       - eureka
-#  admin:
-#    build: ../admin/
-#    networks:
-#      - myp-network
-#    ports:
-#      - "9000:9000"
-#    expose:
-#      - "9000"
-#    links:
-#      - eureka:eureka
-#      - auth-server:auth-server
-#      - config-server:config-server
-#    depends_on:
-#      - eureka
-#      - auth-server
-#      - config-server
+  league:
+    image: myp/league
+    networks:
+      - myp-network
+    ports:
+      - "8081:8081"
+    expose:
+      - "8081"
 #    restart: always
-#  league:
-#    build: ../league/
-#    networks:
-#      - myp-network
-#    ports:
-#      - "8081:8081"
-#    expose:
-#      - "8081"
+    links:
+      - eureka:eureka
+      - auth:auth
+      - config-server:config-server
+      - league-db:league-db
+    depends_on:
+      - eureka
+      - auth
+      - config-server
+      - league-db
+  game:
+    image: myp/game
+    networks:
+      - myp-network
+    ports:
+      - "8082:8082"
+    expose:
+      - "8082"
 #    restart: always
-#    links:
-#      - eureka:eureka
-#      - auth-server:auth-server
-#      - config-server:config-server
-#      - league-db:league-db
-#    depends_on:
-#      - eureka
-#      - auth-server
-#      - config-server
-#      - league-db
-#  game:
-#    build: ../game/
-#    networks:
-#      - myp-network
-#    ports:
-#      - "8082:8082"
-#    expose:
-#      - "8082"
+    links:
+      - eureka:eureka
+      - auth:auth
+      - config-server:config-server
+      - game-db:game-db
+    depends_on:
+      - eureka
+      - auth
+      - config-server
+      - game-db
+  admin:
+    image: myp/admin
+    networks:
+      - myp-network
+    ports:
+      - "9000:9000"
+    expose:
+      - "9000"
+    links:
+      - eureka:eureka
+      - auth:auth
+      - config-server:config-server
+    depends_on:
+      - eureka
+      - auth
+      - config-server
+      - league
+      - game
 #    restart: always
-#    links:
-#      - eureka:eureka
-#      - auth-server:auth-server
-#      - config-server:config-server
-#      - game-db:game-db
-#    depends_on:
-#      - eureka
-#      - auth-server
-#      - config-server
-#      - game-db
+  gateway:
+    image: myp/gateway
+    networks:
+      - myp-network
+    ports:
+      - "8080:8080"
+    expose:
+      - "8080"
+    links:
+      - eureka:eureka
+      - auth:auth
+      - config-server:config-server
+    depends_on:
+      - eureka
+      - auth
+      - config-server
+      - league
+      - game
+#    restart: always
