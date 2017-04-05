@@ -25,11 +25,13 @@
 	</properties>
 
 	<dependencies>
+		
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-eureka-server</artifactId>
 		</dependency>
-
+		
+		
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -44,8 +46,16 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
-
 			<plugin>
+				<groupId>com.spotify</groupId>
+				<artifactId>docker-maven-plugin</artifactId>
+				<version>0.4.13</version>
+				<configuration>
+				    <skipDockerBuild>false</skipDockerBuild>
+				</configuration>
+			</plugin>
+
+		<!-- 	<plugin>
 				<groupId>com.spotify</groupId>
 				<artifactId>docker-maven-plugin</artifactId>
 				<version>0.2.3</version>
@@ -60,7 +70,7 @@
 						</resource>
 					</resources>
 				</configuration>
-			</plugin>
+			</plugin> -->
 		</plugins>
 	</build>
 	<!-- BEGIN: Specific to mapping unit tests and covered code -->

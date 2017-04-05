@@ -1,6 +1,6 @@
 server:
-  port: 8085
-  
+  port: 8083
+
 security:
   oauth2:
     client:
@@ -18,7 +18,11 @@ security:
             /myh1zM6m8cbL5cYFPyP099thbVxzJkjHWqywvQih/qOOjliomKbM9pxG8Z1dB26
             hL9dSAZuA8xExjlPmQIDAQAB
             -----END PUBLIC KEY-----
-            
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+                  
 logging:
   level:
     org.springframework.security: DEBUG

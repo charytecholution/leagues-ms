@@ -15,6 +15,8 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureTestDatabase;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.makeurpicks.dao.PlayerDao;
@@ -37,9 +39,10 @@ public class PlayerServiceTest {
 	@Rule
 	public ExpectedException expectedEx = ExpectedException.none();
 	
-	@Autowired
-	//@InjectMocks
-	private PasswordEncoder encoder;
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+    
 	
 	@Mock
 	public PlayerDao playerDAOMock;
@@ -211,6 +214,7 @@ public class PlayerServiceTest {
 		
 		String inputPassword="Test123";
 		Player player=new PlayerBuilder("user1", "testuser@gmail.com", inputPassword).build();
+		playerService.setPasswordEncoder(passwordEncoder());
 		Player player2=playerService.createPlayer(player);
 		assertNotSame(inputPassword, player2.getPassword());
 		verify(playerDAOMock).save(player);
