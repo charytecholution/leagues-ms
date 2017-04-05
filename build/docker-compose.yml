@@ -64,8 +64,32 @@ services:
       - "6379:6379"
     expose:
       - "6379"
-                
-networks:
+      
+  zookeeper:
+    image: zookeeper
+    restart: always
+    ports:
+      - "2181:2181"
+    expose: 
+      - "2181"
+    networks: 
+      - myp-network
+    
+  kafka:  
+    image: wurstmeister/kafka
+    ports: 
+      - "9092:9092"
+    expose:
+      - "9092"
+    networks: 
+      - myp-network
+    environment: 
+      KAFKA_ADVERTISED_HOST_NAME: localhost
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+    volumes: 
+      - /var/run/docker.sock:/var/run/docker.sock
+   
+networks: 
   myp-network:
     driver: bridge
     

@@ -14,12 +14,15 @@
 		<version>0.0.1</version>
 		<relativePath>../build</relativePath>
 	</parent>
-<properties>
+	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.8</java.version>
 	</properties>
 	<dependencies>
-
+	<dependency>
+  <groupId>org.springframework.cloud</groupId>
+  <artifactId>spring-cloud-starter-stream-rabbit</artifactId>
+</dependency>
 		<!-- turbine/hystix -->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
@@ -30,12 +33,9 @@
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-eureka</artifactId>
 		</dependency>
-<!-- https://mvnrepository.com/artifact/com.netflix.eureka/eureka-client -->
-<!-- <dependency>
-    <groupId>com.netflix.eureka</groupId>
-    <artifactId>eureka-client</artifactId>
-    <version>1.6.1</version>
-</dependency> -->
+		<!-- https://mvnrepository.com/artifact/com.netflix.eureka/eureka-client -->
+		<!-- <dependency> <groupId>com.netflix.eureka</groupId> <artifactId>eureka-client</artifactId> 
+			<version>1.6.1</version> </dependency> -->
 
 		<!-- production -->
 		<dependency>
@@ -53,6 +53,11 @@
 			<artifactId>mysql-connector-java</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>org.hsqldb</groupId>
+			<artifactId>hsqldb</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-rest</artifactId>
 		</dependency>
@@ -63,7 +68,7 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-<dependency>
+		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-oauth2</artifactId>
 		</dependency>
@@ -75,10 +80,10 @@
 		</dependency>
 
 		<!-- web -->
-	<dependency>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-web</artifactId>
-	</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
 
 		<!-- cloud -->
 		<dependency>
@@ -109,10 +114,10 @@
 			<artifactId>spring-security-jwt</artifactId>
 		</dependency>
 
-		 <dependency>
-		     <groupId>org.springframework.boot</groupId>
-		     <artifactId>spring-boot-devtools</artifactId>
-		 </dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.scala-lang</groupId>
 			<artifactId>scala-library</artifactId>
@@ -128,11 +133,8 @@
 			<artifactId>neo4j-cypher-compiler-2.2</artifactId>
 			<version>2.2.5</version>
 		</dependency>
-		<!-- <dependency>
-			<groupId>org.apache.hadoop</groupId>
-			<artifactId>hadoop-core</artifactId>
-			<version>1.0.0</version>
-		</dependency> -->
+		<!-- <dependency> <groupId>org.apache.hadoop</groupId> <artifactId>hadoop-core</artifactId> 
+			<version>1.0.0</version> </dependency> -->
 	</dependencies>
 
 	<!-- <dependencyManagement> -->
@@ -152,51 +154,51 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-				
+
 			</plugin>
 			<plugin>
 				<groupId>com.spotify</groupId>
 				<artifactId>docker-maven-plugin</artifactId>
 				<version>0.4.13</version>
 				<configuration>
-				    <skipDockerBuild>false</skipDockerBuild>
+					<skipDockerBuild>false</skipDockerBuild>
 				</configuration>
 			</plugin>
 		</plugins>
 	</build>
-    <!-- BEGIN: Specific to mapping unit tests and covered code -->
-  <profiles>
-    <profile>
-      <id>coverage-per-test</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <!-- Minimal supported version is 2.4 -->
-            <version>2.13</version>
-            <configuration>
-              <properties>
-                <property>
-                  <name>listener</name>
-                  <value>org.sonar.java.jacoco.JUnitListener</value>
-                </property>
-              </properties>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
+	<!-- BEGIN: Specific to mapping unit tests and covered code -->
+	<profiles>
+		<profile>
+			<id>coverage-per-test</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-surefire-plugin</artifactId>
+						<!-- Minimal supported version is 2.4 -->
+						<version>2.13</version>
+						<configuration>
+							<properties>
+								<property>
+									<name>listener</name>
+									<value>org.sonar.java.jacoco.JUnitListener</value>
+								</property>
+							</properties>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
 
-      <dependencies>
-        <dependency>
-          <groupId>org.sonarsource.java</groupId>
-          <artifactId>sonar-jacoco-listeners</artifactId>
-          <version>3.8</version>
-          <scope>test</scope>
-        </dependency>
-      </dependencies>
-    </profile>
-  </profiles>
-  <!-- END: Specific to mapping unit tests and covered code -->
+			<dependencies>
+				<dependency>
+					<groupId>org.sonarsource.java</groupId>
+					<artifactId>sonar-jacoco-listeners</artifactId>
+					<version>3.8</version>
+					<scope>test</scope>
+				</dependency>
+			</dependencies>
+		</profile>
+	</profiles>
+	<!-- END: Specific to mapping unit tests and covered code -->
 
 </project>

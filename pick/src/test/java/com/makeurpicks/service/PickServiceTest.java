@@ -1,10 +1,9 @@
 package com.makeurpicks.service;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -17,6 +16,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -772,7 +772,6 @@ public class PickServiceTest {
 		DoublePick doublePick = new DoublePick();
 		doublePick.setPickId(pickId);
 		doublePick.setGameId(gameId);
-		doublePick.setPickId(pickId);
 		doublePick.setPlayerId(loggedInPlayerId);
 		
 		when(pickRepositoryMock.findOne(pickId)).thenReturn(pick);
@@ -781,7 +780,8 @@ public class PickServiceTest {
 		
 		pickService.makeDoublePick(pickId, loggedInPlayerId);
 		
-		verify(doublePickRepositoryMock).save(doublePick);
+		ArgumentCaptor<DoublePick> arguments = ArgumentCaptor.forClass(DoublePick.class);
+		verify(doublePickRepositoryMock, atLeast(1)).save(arguments.capture());
 	}
 	
 	@Test

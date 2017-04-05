@@ -29,9 +29,9 @@
 		<module>../auth-server</module>
 		<module>../game</module> 
 		<module>../league</module> 
-	 	<module>../pick</module> 
-		<!-- <module>../player</module> -->
-		<!-- <module>../season</module> -->
+	 	<!-- <module>../pick</module> --> 
+		<module>../admin</module> 
+		<module>../gateway</module>
 		<!-- <module>../leader</module> -->
 		<!-- <module>../league-starter</module> -->
 	</modules>
@@ -59,8 +59,8 @@
 				    <skipDockerBuild>true</skipDockerBuild>
 					<dockerDirectory>${project.basedir}</dockerDirectory>
 					<serverId>nexus</serverId>
-					<!-- <registryUrl>http://nexus.techolution.com:8081/repository/TecholutionDockerRepo/</registryUrl> -->
 					<imageName>nexus.techolution.com:8123/myp/${project.artifactId}</imageName>
+					<!-- <imageName>myp/${project.artifactId}</imageName> -->
 				</configuration>
 			</plugin>
 		</plugins>
