@@ -23,7 +23,6 @@ import com.makeurpicks.message.channels.SqlChannels;
 @EnableBinding(SqlChannels.class)
 @SpringBootApplication
 @EnableEurekaClient
-@EnableResourceServer
 @EnableJpaRepositories
 public class LeagueApplication {
 	

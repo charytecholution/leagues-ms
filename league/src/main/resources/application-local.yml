@@ -1,5 +1,11 @@
 
 spring:
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+    spring.rabbitmq.addresses: localhost:5672
   jpa:
     show-sql: true
     hibernate:
@@ -12,6 +18,8 @@ spring:
     username: root
     password: admin123
     driver-class-name: com.mysql.jdbc.Driver
+
+security.user.password: testme
 
 security:
   oauth2:
