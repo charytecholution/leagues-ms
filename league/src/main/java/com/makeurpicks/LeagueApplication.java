@@ -18,7 +18,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import com.makeurpicks.message.channels.SqlChannels;
 
 
-@EnableResourceServer
+//@EnableResourceServer
 @IntegrationComponentScan
 @EnableBinding(SqlChannels.class)
 @SpringBootApplication
