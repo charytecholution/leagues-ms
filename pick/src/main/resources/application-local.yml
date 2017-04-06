@@ -22,7 +22,21 @@ eureka:
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka/
-                  
+
+spring:
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5Dialect
+  datasource:
+    url: jdbc:mysql://localhost:3307/pick
+    username: dbuser
+    password: password
+    driver-class-name: com.mysql.jdbc.Driver
+
 logging:
   level:
     org.springframework.security: DEBUG

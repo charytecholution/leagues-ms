@@ -54,9 +54,9 @@ public class PickService {
 		pick.setId(UUID.randomUUID().toString());
 //		
 //		//save pick by pick id
-//		pickRepository.save(pick);
+		pickRepository.save(pick);
 //		
-//		picksByWeekRepository.createPick(pick);		
+		picksByWeekRepository.createPick(pick);
 		return pick;
 	}
 
