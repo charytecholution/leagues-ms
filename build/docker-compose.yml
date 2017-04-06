@@ -55,7 +55,20 @@ services:
     ports:
       - "3304:3306"
     expose:
-      - "3304"    
+      - "3304"
+  pick-db:
+      image: mysql:latest
+      environment:
+        - MYSQL_ROOT_PASSWORD=admin123
+        - MYSQL_USER=dbuser
+        - MYSQL_PASSWORD=password
+        - MYSQL_DATABASE=pick
+      networks:
+        - myp-network
+      ports:
+        - "3307:3306"
+      expose:
+        - "3307"
   redis:
     image: redis
     networks:
