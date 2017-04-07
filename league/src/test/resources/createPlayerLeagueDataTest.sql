@@ -1,1 +1,1 @@
-INSERT INTO league.player_league (league_id, player_id, league_name,password) VALUES ('1', '1', 'league12','abc');
+INSERT INTO player_league (league_id, player_id, league_name,password) VALUES ('1', '1', 'league12','abc');
