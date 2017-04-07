@@ -1,1 +1,1 @@
-delete from league.player_league where league_id=1;
+delete from player_league where league_id=1;
