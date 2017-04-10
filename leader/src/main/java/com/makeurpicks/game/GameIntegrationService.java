@@ -27,6 +27,7 @@ public class GameIntegrationService {
     @LoadBalanced
     RestTemplate restTemplate;
 
+
 	@Autowired
     @LoadBalanced
     private OAuth2RestOperations secureRestTemplate;
