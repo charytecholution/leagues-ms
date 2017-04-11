@@ -4,7 +4,6 @@ import java.security.Principal;
 import java.util.List;
 import java.util.Set;
 
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +21,8 @@ import com.makeurpicks.domain.LeagueType;
 import com.makeurpicks.domain.PlayerLeague;
 import com.makeurpicks.service.LeagueService;
 
+import io.swagger.annotations.ApiOperation;
+
 @RestController
 @RequestMapping(value = "")
 public class LeagueController {
@@ -37,7 +38,7 @@ public class LeagueController {
 	 * @PreAuthorize("hasRole('ADMIN')") public Principal resource(Principal
 	 * principal) { return principal; }
 	 */
-
+	@ApiOperation(value = "getAllLeague", nickname = "Get All Leagues")
 	@RequestMapping(method = RequestMethod.GET, value = "/")
 	public @ResponseBody Iterable<League> getAllLeague() {
 		log.debug("In ------------------------ League Controller ");
@@ -95,7 +96,7 @@ public class LeagueController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST, value = "/player/admin")
-	@PreAuthorize("hasRole('ADMIN')")
+	//@PreAuthorize("hasRole('ADMIN')")
 	public void addPlayerToLeague(@RequestBody PlayerLeague playerLeague) {
 		log.debug("playerLeague =" + playerLeague.toString());
 
@@ -119,7 +120,7 @@ public class LeagueController {
 	}
 
 	@RequestMapping(method = RequestMethod.DELETE, value = "/{id}")
-	@PreAuthorize("hasRole('ADMIN')")
+	//@PreAuthorize("hasRole('ADMIN')")
 	public @ResponseBody boolean deleteLeague(@PathVariable String id) {
 		leagueService.deleteLeague(id);
 		return true;

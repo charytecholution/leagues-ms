@@ -4,16 +4,14 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.cloud.stream.annotation.EnableBinding;
-import org.springframework.cloud.stream.binder.PartitionKeyExtractorStrategy;
-import org.springframework.cloud.stream.binder.PartitionSelectorStrategy;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.integration.annotation.IntegrationComponentScan;
-import org.springframework.messaging.Message;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 
 import com.makeurpicks.message.channels.SqlChannels;
 
@@ -32,17 +30,24 @@ public class LeagueApplication {
 
 	
 //	@Configuration
-//    @EnableWebSecurity
-//    @EnableGlobalMethodSecurity(prePostEnabled = true)
+    @EnableWebSecurity
+    @EnableGlobalMethodSecurity(prePostEnabled = true)
     protected static class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
-            http.authorizeRequests()
+            /*http.authorizeRequests()
             .antMatchers("/leagues/types", "/leagues/env", "/leagues/info", "/leagues/health").permitAll()
                     .anyRequest().authenticated()
                     .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.NEVER)
-            ;
+            ;*/
+        	http.authorizeRequests().anyRequest().authenticated().and().sessionManagement()
+        	 					.sessionCreationPolicy(SessionCreationPolicy.NEVER);
+        }
+        @Override
+        public void configure(WebSecurity web) throws Exception {
+        			web.ignoring().antMatchers("/v2/api-docs", "/configuration/ui", "/swagger-resources",
+        					"/configuration/security", "/swagger-ui.html", "/webjars/**");
         }
     }
   
