@@ -1,0 +1,22 @@
+version: "2"
+
+services:
+  league:
+    image: nexus.techolution.com:8123/myp/league
+    networks:
+      - myp-network
+    ports:
+      - "8081:8081"
+    expose:
+      - "8081"
+#    restart: always
+    links:
+      - eureka:eureka
+      - auth:auth
+      - config-server:config-server
+      - league-db:league-db
+    depends_on:
+      - eureka
+      - auth
+      - config-server
+      - league-db

@@ -1,0 +1,22 @@
+version: "2"
+
+services:
+  game:
+    image: nexus.techolution.com:8123/myp/game
+    networks:
+      - myp-network
+    ports:
+      - "8082:8082"
+    expose:
+      - "8082"
+#    restart: always
+    links:
+      - eureka:eureka
+      - auth:auth
+      - config-server:config-server
+      - game-db:game-db
+    depends_on:
+      - eureka
+      - auth
+      - config-server
+      - game-db

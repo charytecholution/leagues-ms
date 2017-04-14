@@ -42,7 +42,9 @@ services:
     ports:
       - "3305:3306"
     expose:
-      - "3305"    
+      - "3305"
+      
+          
   league-db:  
     image: mysql:latest
     environment:
@@ -56,6 +58,8 @@ services:
       - "3304:3306"
     expose:
       - "3304"
+      
+      
   pick-db:
       image: mysql:latest
       environment:
@@ -69,6 +73,8 @@ services:
         - "3307:3306"
       expose:
         - "3307"
+        
+        
   redis:
     image: redis
     networks:

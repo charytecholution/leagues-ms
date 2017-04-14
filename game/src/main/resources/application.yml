@@ -13,4 +13,20 @@ logging:
     org.springframework.security: DEBUG
     log4j.logger.org.hibernate.SQL: DEBUG
     com.makeurpicks: DEBUG
+
+#spring:
+#  application:
+#    name: game
+#  profiles:
+#    active: local    
+#
+#server:
+#  port: 8082
+#
+#
+#logging:
+#  level:
+#    org.springframework.security: DEBUG
+#    log4j.logger.org.hibernate.SQL: DEBUG
+#    com.makeurpicks: DEBUG
     

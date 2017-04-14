@@ -61,6 +61,16 @@ public class LeagueService {
 		
 	}
 
+	public void joinLeague(League league, String playerId)
+	{
+		joinLeague(league.getId(), playerId, league.getPassword());
+		
+//		PlayerLeagueId playerLeagueId = new PlayerLeagueId(league.getId(), playerId);
+//		PlayerLeague playerLeague = new PlayerLeague(playerLeagueId);
+//		playerLeague.setLeagueName(league.getLeagueName());
+//		joinLeague(playerLeague);
+	}
+	
 	public void joinLeague(PlayerLeague playerLeague)
 	{
 		if (playerLeague.getLeagueId() == null)
