@@ -1,9 +1,9 @@
 security:
   oauth2:
     client:
-      access-token-uri: http://auth:9999/auth/oauth/token
-      user-authorization-uri: http://auth:9999/auth/oauth/authorize
-      logout-uri: http://auth:9999/auth/logout
+      access-token-uri: http://auth.delesio.com:9999/auth/oauth/token
+      user-authorization-uri: http://auth.delesio.com:9999/auth/oauth/authorize
+      logout-uri: http://auth.delesio.com:9999/auth/logout
       client-id: confidential
       client-secret: secret
     resource:
@@ -20,3 +20,14 @@ security:
 config:
   oauth2:
     resourceURI: http://league:8081/leagues/user
+
+    
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka:8761/eureka/
+  instance:
+#    preferIpAddress: true
+    status-page-url: http://delesio.com:900/admin/info
+    health-check-url: http://delesio.com:9000/admin/health
+    home-page-url: http://delesio.com:9000/admin   
