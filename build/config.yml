@@ -1,0 +1,12 @@
+version: "2"
+
+services:
+  config-server:
+    image: nexus.techolution.com:8123/myp/config-server
+    networks:
+      - myp-network
+    ports:
+      - "8888:8888"
+    expose:
+      - "8888"
+

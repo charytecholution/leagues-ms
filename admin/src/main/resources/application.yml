@@ -11,15 +11,17 @@ server:
 #    remote_ip_header: x-forwarded-for
 #    protocol_header: x-forwarded-proto
 
-security:
-  oauth2:
-    client:
-      logout-uri: http://localhost:9999/auth/logout
-
 hystrix.command.default.execution.isolation.thread.timeoutInMilliseconds: 190000
 eureka.client.eureka-server-read-timeout-seconds: 5450
 eureka.client.eureka-server-connect-timeout-seconds: 5450
 
+logging:
+  level:
+    org.springframework.security: DEBUG
+    org.springframework.cloud.netflix.zuul: INFO
+    com.makeurpicks: DEBUG
+    com.netflix.hystrix: DEBUG
+    
 zuul:
   routes:
     league:
@@ -30,7 +32,7 @@ zuul:
       stripPrefix: false
     season:
       path: /seasons/**
-      serviceId: season
+      serviceId: league
       stripPrefix: false
     team:
       path: /teams/**
@@ -49,9 +51,61 @@ zuul:
 #    player:
 #      path: /register/auth/players/**
 #      stripPrefix: true
-logging:
-  level:
-    org.springframework.security: DEBUG
-    org.springframework.cloud.netflix.zuul: INFO
-    com.makeurpicks: DEBUG
-    com.netflix.hystrix: DEBUG
+    
+#spring:
+#  application:
+#   name: admin
+#  profiles:
+#    active: local    
+#
+#server:
+#  port: 9000
+#  context-path: /admin
+##  tomcat:
+##    remote_ip_header: x-forwarded-for
+##    protocol_header: x-forwarded-proto
+#
+#security:
+#  oauth2:
+#    client:
+#      logout-uri: http://localhost:9999/auth/logout
+#
+#hystrix.command.default.execution.isolation.thread.timeoutInMilliseconds: 190000
+#eureka.client.eureka-server-read-timeout-seconds: 5450
+#eureka.client.eureka-server-connect-timeout-seconds: 5450
+#
+#zuul:
+#  routes:
+#    league:
+#      path: /leagues/**
+#      stripPrefix: false
+#    pick:
+#      path: /picks/**
+#      stripPrefix: false
+#    season:
+#      path: /seasons/**
+#      serviceId: season
+#      stripPrefix: false
+#    team:
+#      path: /teams/**
+#      serviceId: game
+#      stripPrefix: false
+#    week:
+#      path: /weeks/**
+#      stripPrefix: false
+#      serviceId: game
+#    game:
+#      path: /games/**
+#      stripPrefix: false
+#    auth:
+#      path: /auth/players/**
+#      stripPrefix: false
+##    player:
+##      path: /register/auth/players/**
+##      stripPrefix: true
+#logging:
+#  level:
+#    org.springframework.security: DEBUG
+#    org.springframework.cloud.netflix.zuul: INFO
+#    com.makeurpicks: DEBUG
+#    com.netflix.hystrix: DEBUG

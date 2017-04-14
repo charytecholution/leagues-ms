@@ -11,8 +11,8 @@ import org.hibernate.annotations.GenericGenerator;
 @Table
 public class League {
 	@Id
-	@GeneratedValue(generator = "uuid")
-	@GenericGenerator(name = "uuid", strategy = "uuid2")
+//	@GeneratedValue(generator = "uuid")
+//	@GenericGenerator(name = "uuid", strategy = "uuid2")
 	private String id;
 	private String leagueName;
 	private int paidFor = 0;

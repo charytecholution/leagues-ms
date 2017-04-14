@@ -237,10 +237,22 @@ public class AuthServerApplication extends WebMvcConfigurerAdapter implements Co
 
 	@Override
 	public void run(String... arg0) throws Exception {
-//		PlayerBuilder playerBuilder = new PlayerBuilder("admin", "dinesh.challa@techolution.com", "admin");
-//		playerBuilder.adAdmin();
-//		Player admin =playerBuilder.build();
-//		playerServices.createPlayer(admin);
+		PlayerBuilder playerBuilder = new PlayerBuilder("admin", "admin@techolution.com", "admin");
+		playerBuilder.adAdmin();
 		
+		Player admin =playerBuilder.build();
+		playerServices.createPlayer(admin);
+		
+		Player player1 = new PlayerBuilder("player1", "player@techolution.com", "password").build();
+		Player player2 = new PlayerBuilder("player2", "player@techolution.com", "password").build();
+		Player player3 = new PlayerBuilder("player3", "player@techolution.com", "password").build();
+		Player player4 = new PlayerBuilder("player4", "player@techolution.com", "password").build();
+		Player player5 = new PlayerBuilder("player5", "player@techolution.com", "password").build();
+		
+		playerServices.createPlayer(player1);
+		playerServices.createPlayer(player2);
+		playerServices.createPlayer(player3);
+		playerServices.createPlayer(player4);
+		playerServices.createPlayer(player5);
 	}
 }

@@ -1,0 +1,12 @@
+version: "2"
+
+services:
+  eureka:
+    image: nexus.techolution.com:8123/myp/eureka
+    networks:
+      - myp-network
+    ports:
+      - "8761:8761"
+    expose:
+      - "8761"
+      

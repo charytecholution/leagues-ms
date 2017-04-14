@@ -1,12 +1,28 @@
-server:
-  port: 8083
 spring:
   application:
-   name: pick
+    name: pick
   profiles:
     active: local    
-            
+
+server:
+  port: 8083
+
+
 logging:
   level:
     org.springframework.security: DEBUG
+    log4j.logger.org.hibernate.SQL: DEBUG
     com.makeurpicks: DEBUG
+
+#server:
+#  port: 8083
+#spring:
+#  application:
+#   name: pick
+#  profiles:
+#    active: local    
+#            
+#logging:
+#  level:
+#    org.springframework.security: DEBUG
+#    com.makeurpicks: DEBUG

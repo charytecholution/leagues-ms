@@ -177,7 +177,7 @@
 		$scope.season.startYear = 2017;
 		$scope.season.endYear = 2018;
 		
-		$http.get('/admin/leagues/seasons/current').success(function(data) {
+		$http.get('/admin/seasons/current').success(function(data) {
 			$scope.seasons = data;
 			if (data[0] === undefined)
 				$scope.showseasons=false;
@@ -193,7 +193,7 @@
 			
 			if (confirm("Are yoou sure you want to delete season?")) {
 		    
-				var url = '/admin/leagues/seasons/'+season.id;
+				var url = '/admin/seasons/'+season.id;
 				$http({
 					method : "DELETE",
 					url : url,
@@ -201,7 +201,7 @@
 					dataType : "json",
 				}).success(function(res) { 
 					
-					$http.get('/admin/leagues/seasons/current').success(function(data) {
+					$http.get('/admin/seasons/current').success(function(data) {
 						$scope.seasons = data;
 						if (data[0] === undefined)
 							$scope.showseasons=false;
@@ -222,7 +222,7 @@
 			
 			$http({
 				method : "POST",
-				url : '/admin/leagues/seasons/',
+				url : '/admin/seasons/',
 				contentType : "application/json",
 				dataType : "json",
 				data : JSON.stringify($scope.season)
@@ -263,13 +263,13 @@
 		});
 		
 		$scope.$watch('leaguesBySeason.leagueType', function (newValue, oldValue, scope) {
-		$http.get('/admin/leagues/seasons/leaguetypes/'+$scope.leaguesBySeason.leagueType).success(function(data) {
+		$http.get('/admin/seasons/leaguetypes/'+$scope.leaguesBySeason.leagueType).success(function(data) {
 			$scope.allseasons = data;
 		});
 		});
 		
 		$scope.$watch('leaguesBySeason.seasonId', function (newValue, oldValue, scope) {
-			$http.get('/admin/leagues/seasonid/'+$scope.leaguesBySeason.seasonId).success(function(data) {
+			$http.get('/admin/seasonid/'+$scope.leaguesBySeason.seasonId).success(function(data) {
 				$scope.seasonalLeagues = data;
 			});
 			});
@@ -282,7 +282,7 @@
 //			
 //		});
 //		
-		$http.get('/admin/leagues/seasons/current').success(function(data) {
+		$http.get('/admin/seasons/current').success(function(data) {
 //			console.log(JSON.stringify(data));
 			$scope.seasons = data;
 			if (data[0] === undefined)
@@ -296,7 +296,7 @@
 		$scope.season.leagueType = ["pickem"];
 		
 		this.getReqLeagues = function(){
-			$http.get('/admin/leagues/seasonid/'+$scope.leaguesBySeason.seasonId).success(function(data) {
+			$http.get('/admin/seasonid/'+$scope.leaguesBySeason.seasonId).success(function(data) {
 //				console.log(data);
 				$scope.leagueValues = data;
 			});
@@ -437,7 +437,7 @@
 //			$scope.week.seasonId = data[0].seasonId;
 //		});
 		
-		$http.get('/admin/leagues/seasons/current').success(function(data) {
+		$http.get('/admin/seasons/current').success(function(data) {
 			$scope.seasons = data;
 			$scope.week.seasonId = data[0].id;
 			
@@ -533,7 +533,7 @@
 		$scope.add_game_model.favHome = true;
 		
 //		leagueService.getLeagues().then(function(data) {
-		$http.get('/admin/leagues/seasons/current').success(function(data) {
+		$http.get('/admin/seasons/current').success(function(data) {
 			$scope.seasons = data;
 			
 			$log.debug('SetupController:Leagues=' +JSON.stringify(data));
