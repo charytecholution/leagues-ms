@@ -1,8 +1,8 @@
 security:
   oauth2:
     client:
-      access-token-uri: http://auth:9999/auth/oauth/token
-      user-authorization-uri: http://auth:9999/auth/oauth/authorize
+      access-token-uri: http://auth.delesio.com:9999/auth/oauth/token
+      user-authorization-uri: http://auth.delesio.com:9999/auth/oauth/authorize
       client-id: ui
       client-secret: secret
     resource:
@@ -16,13 +16,11 @@ security:
             -----END PUBLIC KEY-----
 
 eureka:
-  instance:
-    prefer-ip-address: true
-#    hostname: ${vcap.application.uris[0]:127.0.0.1}
-#    nonSecurePort: ${vcap.services.eureka-service.credentials.port:${server.port}}
-#    leaseRenewalIntervalInSeconds: 10
-#    metadataMap:
-#      instanceId: ${vcap.application.instance_id:${spring.application.name}:${random.value}}
   client:
-    serviceUrl:
+    service-url:
       defaultZone: http://eureka:8761/eureka/
+  instance:
+#    preferIpAddress: true
+    status-page-url: http://delesio.com:8080/info
+    health-check-url: http://delesio.com:8080/health
+    home-page-url: http://delesio.com:8080/
