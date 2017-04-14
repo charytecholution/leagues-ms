@@ -25,6 +25,9 @@ eureka:
     service-url:
       defaultZone: http://eureka:8761/eureka/
   instance:
-    preferIpAddress: true
+#    preferIpAddress: true
+    status-page-url: http://delesio.com:9999/auth/info
+    health-check-url: http://delesio.com:9999/auth/health
+    home-page-url: http://delesio.com:9999/auth     
  
          
