@@ -29,8 +29,7 @@ import com.makeurpicks.message.channels.SqlChannels;
 import com.makeurpicks.service.LeagueService;
 import com.makeurpicks.service.SeasonService;
 
-
-//@EnableResourceServer
+@EnableResourceServer
 @IntegrationComponentScan
 @EnableBinding(SqlChannels.class)
 @SpringBootApplication
