@@ -1,21 +1,21 @@
 spring:
-  rabbitmq:
-    host: localhost
-    port: 5672
-    username: guest
-    password: guest
-    spring.rabbitmq.addresses: localhost:5672
+#  rabbitmq:
+#    host: localhost
+#    port: 5672
+#    username: guest
+#    password: guest
+#    spring.rabbitmq.addresses: localhost:5672
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL5Dialect
   datasource:
-    url: jdbc:mysql://${MYSQL_PORT_3306_TCP_ADDR:game-db}:${MYSQL_PORT_3306_TCP_PORT:3305}/${MYSQL_ENV_MYSQL_DATABASE:game}
-    username: ${MYSQL_USER:dbuser}
-    password: ${MYSQL_PASSWORD:password}
+    url: jdbc:mysql://game-db:3305/game
+    username: dbuser
+    password: password
     driver-class-name: com.mysql.jdbc.Driver 
     dbcp:
       max-active:  5
