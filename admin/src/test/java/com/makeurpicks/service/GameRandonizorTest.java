@@ -39,7 +39,7 @@ public class GameRandonizorTest {
 	}
 	
 	@Test
-	public void createRandomLeague() {
+	public void test() {
 		List<SeasonView> seasons = new ArrayList<>();
 		Mockito.when(seasonIntegrationService.getCurrentSeasons()).thenReturn(seasons);
 		expectedEx.expect(RuntimeException.class);
