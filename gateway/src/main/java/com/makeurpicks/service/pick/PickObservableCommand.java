@@ -54,6 +54,7 @@ public class PickObservableCommand extends HystrixObservableCommand<Map<String, 
 		log.debug("callUrl");
 		
 		ParameterizedTypeReference<Map<String, PickView>> responseType = new ParameterizedTypeReference<Map<String, PickView>>() {};
+		//TODO Replace with Zuul or JMS
 		Map<String, PickView> map = secureRestTemplate.exchange("http://pick/picks/self/leagueid/{leagueid}/weekid/{weekid}", HttpMethod.GET, null, responseType, leagueid, weekid).getBody();	
         
         log.debug("callUrl:returned="+map);
