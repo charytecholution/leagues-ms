@@ -85,55 +85,52 @@ public class GatewayService {
 						
 						for (GameView game : games)
 						{
-							
-							if (!game.getHasGameStarted())
+                            pickColumn = ViewPickColumn.asNoPick(game.getId(), player.getId());
+							/*if (!game.getHasGameStarted())
 							{
 								pickColumn = ViewPickColumn.asNotStarted(game.getId(), player.getId());
 								continue;
-							}
+							}*/
 							
 							//figure out gamewinner
 							String gameWinner = game.getGameWinner();
-							
-							PickView pick = picksForAllPlayers.get(game.getId());
-							if (pick != null)
-							{
-								DoublePickView dpv = doublePicks.get(player.getId());
-								boolean isDouble = false;
-								if (dpv!=null && dpv.getGameId().equals(game.getId()))
-									isDouble = true;
-								
-								if (gameWinner.equals(pick.getTeamId()))
-								{
-									PlayerWins playerWins = winsByPlayer.get(player.getId());
-									if (playerWins == null)
-										wins = 0;
-									else
-										wins = playerWins.getWins();
-										
-									if (isDouble)
-									{
-										wins = new Integer(wins+=2);
-										pickColumn = ViewPickColumn.asDoubleWinner(game.getId(), player.getId(), teams.get(pick.getTeamId()).getShortName());
-									}
-									else
-									{
-										wins = new Integer(wins+=1);
-										pickColumn = ViewPickColumn.asWinner(game.getId(), player.getId(), teams.get(pick.getTeamId()).getShortName());
-									}
-									
+                            if (picksForAllPlayers != null) {
+                                PickView pick = picksForAllPlayers.get(game.getId());
+                                if (pick != null) {
+                                    DoublePickView dpv = null;
+                                    if (doublePicks != null) {
+                                        dpv = doublePicks.get(player.getId());
+                                    }
+                                    boolean isDouble = false;
+                                    if (dpv != null && dpv.getGameId().equals(game.getId()))
+                                        isDouble = true;
+
+                                    if (gameWinner.equals(pick.getTeamId())) {
+                                        PlayerWins playerWins = winsByPlayer.get(player.getId());
+                                        if (playerWins == null)
+                                            wins = 0;
+                                        else
+                                            wins = playerWins.getWins();
+
+                                        if (isDouble) {
+                                            wins = new Integer(wins += 2);
+                                            pickColumn = ViewPickColumn.asDoubleWinner(game.getId(), player.getId(), teams.get(pick.getTeamId()).getShortName());
+                                        } else {
+                                            wins = new Integer(wins += 1);
+                                            pickColumn = ViewPickColumn.asWinner(game.getId(), player.getId(), teams.get(pick.getTeamId()).getShortName());
+                                        }
+
 //									winsByPlayer.add(PlayerWins.build(player.getId(), wins));
-									
-								}
-								else
-								{
-									//game loser
-									if (isDouble)
-										pickColumn = ViewPickColumn.asDoubleLoser(game.getId(), player.getId(), teams.get(pick.getTeamId()).getShortName());
-									else
-										pickColumn = ViewPickColumn.asLoser(game.getId(), player.getId(), teams.get(pick.getTeamId()).getShortName());
-								}
-							}
+
+                                    } else {
+                                        //game loser
+                                        if (isDouble)
+                                            pickColumn = ViewPickColumn.asDoubleLoser(game.getId(), player.getId(), teams.get(pick.getTeamId()).getShortName());
+                                        else
+                                            pickColumn = ViewPickColumn.asLoser(game.getId(), player.getId(), teams.get(pick.getTeamId()).getShortName());
+                                    }
+                                }
+                            }
 							else
 							{
 								//no pick

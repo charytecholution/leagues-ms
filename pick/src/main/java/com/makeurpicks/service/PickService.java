@@ -51,12 +51,12 @@ public class PickService {
 		//make sure all the parms are set
 //		validatePick(pick, false);  
 		
-		pick.setId(UUID.randomUUID().toString());
+		//pick.setId(UUID.randomUUID().toString());
 //		
 //		//save pick by pick id
-		pickRepository.save(pick);
+		Pick pickCreated = pickRepository.save(pick);
 //		
-		picksByWeekRepository.createPick(pick);
+		picksByWeekRepository.createPick(pickCreated);
 		return pick;
 	}
 

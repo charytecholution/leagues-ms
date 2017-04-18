@@ -328,7 +328,7 @@
 				local_model.teamId = teamid;
 				local_model.gameId = gameid;
 				local_model.weekId = $scope.week.weekId;
-				local_model.leagueId = $scope.league.id;
+				local_model.leagueId = $scope.league.leagueId;
 				
 				var doubleSubmission = false;
 				var url = '/picks/';
