@@ -130,11 +130,7 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.scala-lang</groupId>
-			<artifactId>scala-library</artifactId>
-			<version>2.11.0</version>
-		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-test</artifactId>
@@ -174,6 +170,7 @@
 				<version>0.4.13</version>
 				<configuration>
 					<skipDockerBuild>false</skipDockerBuild>
+					<skipDockerPush>false</skipDockerPush>
 				</configuration>
 			</plugin>
 		</plugins>

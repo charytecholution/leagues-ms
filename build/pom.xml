@@ -57,6 +57,7 @@
 				<!-- </executions> -->
 				<configuration>
 				    <skipDockerBuild>true</skipDockerBuild>
+				    <skipDockerPush>true</skipDockerPush>
 					<dockerDirectory>${project.basedir}</dockerDirectory>
 					<serverId>nexus</serverId>
 					<imageName>nexus.techolution.com:8123/myp/${project.artifactId}</imageName>
