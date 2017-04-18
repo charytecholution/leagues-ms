@@ -94,7 +94,8 @@
 				//console.log('doublePickId='+doublePickId);
 				console.log('gameId='+scope.game.id+"  :cope.game.hasGameStarted:"+scope.game.hasGameStarted);
 				
-				var gamestatus, favstatus, dogstatus, selectionstatus;
+				var gamestatus, favstatus, dogstatus, selectionstatus,totalPointsTemp;
+				totalPointsTemp=0;
 				
 				//has game started?
 				if (scope.game.hasGameStarted) {
@@ -157,18 +158,22 @@
 							if (doublePickId === pickIdForGame) {
 								//team is winner and is double
 								gamestatus = "double_won";
+								totalPointsTemp=totalPointsTemp+2;
 							} else {
 								//team is winner
 								gamestatus = "won";
+								totalPointsTemp=totalPointsTemp+1;
 							}
 						} else {
 							if (doublePickId === pickIdForGame) {
 								//team is loser and dobule
 								gamestatus = "double_loss";
+								totalPointsTemp=totalPointsTemp-2;
 								
 							} else {
 								//team is loser
 								gamestatus = "loss";
+								totalPointsTemp=totalPointsTemp-1;
 							}
 						}
 							
@@ -282,6 +287,7 @@
 				scope.status.teamstatus[dogId] = dogstatus;
 				//MYP67
 				scope.status.selectionStatus[scope.game.id] = selectionstatus;
+				scope.totalPoints=scope.totalPoints+totalPointsTemp;
 				//console.log('favId='+favId+' dogId='+dogId+' pickedTeam='+pickedTeamIdForGame+' gameWinner='+teamIdForGameWinner+' gamestatus='+scope.status.gamestatus[scope.game.id]+' favstatus='+scope.status.teamstatus[favId]+' dogstatus='+scope.status.teamstatus[dogId]+' selectionStatus '+scope.status.selectionStatus[scope.game.id]);
 
 			}
@@ -296,6 +302,7 @@
 		$scope.status.gamestatus = {};
 		$scope.status.teamstatus = {};
 		$scope.status.selectionStatus = {};
+		$scope.totalPoints=0;
 
 //		makePickPageService.getPage().then(function(data) {
 		//console.log('leagueid:'+$rootScope.leagueId+':weekid:'+$rootScope.weekId);
@@ -303,7 +310,7 @@
 			$http.get('/makepicks/leagueid/'+$rootScope.leagueId+'/weekid/'+$rootScope.weekId).success(function(data) {	
 				console.log('MakePickController:loadMakePick.game data is='+JSON.stringify(data));
 				$scope.page = data;
-				console.log('Before calling pick data');
+				/*console.log('Before calling pick data');
 					$http.get('/picks/self/leagueid/'+$rootScope.leagueId+'/weekid/'+$rootScope.weekId).success(function(data) {	
 						$log.debug('MakePickController:loadMakePicks.Pick data is='+JSON.stringify(data))
 						
@@ -319,7 +326,7 @@
 						$scope.page.doublePick=data;
 							
 						
-					})
+					})*/
 				
 			})
 		});
@@ -350,7 +357,7 @@
 	        	    }
 	        	
 	        	$scope.page = data;
-				console.log('Before calling pick data in weekchanged');
+				/*console.log('Before calling pick data in weekchanged');
 					$http.get('/picks/self/leagueid/'+$rootScope.leagueId+'/weekid/'+$rootScope.weekId).success(function(data) {	
 						$log.debug('MakePickController:loadMakePicks.pick data='+JSON.stringify(data))
 						
@@ -366,7 +373,7 @@
 						$scope.page.doublePick=data;
 							
 						
-					})
+					})*/
 	        });
 		});
 		
