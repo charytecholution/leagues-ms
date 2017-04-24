@@ -8,5 +8,5 @@ import com.makeurpicks.domain.Player;
 @Repository
 public interface PlayerDao extends CrudRepository<Player, String> {
 
-	public Player findByUsername(String username);
+    Player findByUsername(String username);
 }

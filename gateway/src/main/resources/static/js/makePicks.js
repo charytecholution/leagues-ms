@@ -396,6 +396,7 @@
 				local_model.teamId = teamid;
 				local_model.gameId = gameid;
 				local_model.weekId = $scope.week.weekId;
+
 				local_model.leagueId = $scope.league.id;
 				if(local_model.leagueId == null || local_model.leagueId  == ''){
 					local_model.leagueId =$rootScope.leagueId;

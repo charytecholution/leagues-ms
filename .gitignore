@@ -7,6 +7,8 @@
 *.o
 *.so
 *.bak
+*.xml
+*.iml
 
 # Packages #
 ############

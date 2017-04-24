@@ -84,10 +84,10 @@ public class RedisPicksByWeekRepository implements PicksByWeekRepository {
 		Map<String, String> gameMap = playerMap.get(playerId);
 		if (gameMap == null)
 			gameMap = new HashMap<>();
-		
-		weekMap.put(weekId, playerMap);
+
 		gameMap.put(gameId, pickId);
 		playerMap.put(playerId, gameMap);
+		weekMap.put(weekId, playerMap);
 		
 		hashOps.put(key, leagueId, weekMap);
 		return pick;
