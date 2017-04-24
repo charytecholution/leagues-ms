@@ -1,11 +1,11 @@
 <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
 	<pick-row game=game status=status page=page	></pick-row>
 	
-	<div class="gamebox shadow {{status.gamestatus[game.id]}}">
+	<div class="gamebox shadow {{status.gamestatus[game.id]}} {{status.selectionStatus[game.id]}}">
 		<div class="col-sm-12">
 			
 			
-			<div class="row gamerow {{status.teamstatus[game.favId]}}" ng-click="(status.teamstatus[game.favId] === 'opponent' || status.teamstatus[game.favId] === 'doubleable' || status.teamstatus[game.favId] === 'unpicked' ) && makePick(game, 'fav', $index)"> 
+			<div class="row gamerow {{status.teamstatus[game.favId]}} " ng-click="(status.teamstatus[game.favId] === 'opponent' || status.teamstatus[game.favId] === 'doubleable' || status.teamstatus[game.favId] === 'unpicked' ) && makePick(game, 'fav', $index)"> 
 			
 				<!-- PICK TOOL -->
 				<div class="col-xs-1 pick-selection-icon"><i class="fa fa-check-circle-o {{status.teamstatus[game.favId]}}"><span ng-show="status.teamstatus[game.favId] === 'double'">x2</span></i></div>
