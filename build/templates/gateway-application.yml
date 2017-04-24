@@ -1,0 +1,30 @@
+spring:
+  application:
+   name: <name>
+  profiles:
+    active: local    
+
+server:
+  port: <port>
+  context-path: /<context>
+#  tomcat:
+#    remote_ip_header: x-forwarded-for
+#    protocol_header: x-forwarded-proto
+
+hystrix.command.default.execution.isolation.thread.timeoutInMilliseconds: 190000
+eureka.client.eureka-server-read-timeout-seconds: 5450
+eureka.client.eureka-server-connect-timeout-seconds: 5450
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+    org.springframework.cloud.netflix.zuul: INFO
+    com.makeurpicks: DEBUG
+    com.netflix.hystrix: DEBUG
+    
+zuul:
+  routes:
+    <eureka_name>:
+      path: /<path>/**
+      stripPrefix: false
+

@@ -1,3 +1,9 @@
+spring:
+  application:
+   name: admin
+  profiles:
+    active: local    
+
 server:
   port: 9000
   context-path: /admin
@@ -5,31 +11,17 @@ server:
 #    remote_ip_header: x-forwarded-for
 #    protocol_header: x-forwarded-proto
 
-security:
-  oauth2:
-    client:
-      access-token-uri: ${vcap.services.auth-token.credentials.uri:http://localhost:9999/auth/oauth/token}
-      user-authorization-uri: ${vcap.services.auth-authorize.credentials.uri:http://localhost:9999/auth/oauth/authorize}
-      client-id: confidential
-      client-secret: secret
-    resource:
-      jwt:
-        key-value: |
-            -----BEGIN PUBLIC KEY-----
-            MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDNQZKqTlO/+2b4ZdhqGJzGBDlt
-            b5PZmBz1ALN2YLvt341pH6i5mO1V9cX5Ty1LM70fKfnIoYUP4KCE33dPnC7LkUwE
-            /myh1zM6m8cbL5cYFPyP099thbVxzJkjHWqywvQih/qOOjliomKbM9pxG8Z1dB26
-            hL9dSAZuA8xExjlPmQIDAQAB
-            -----END PUBLIC KEY-----
-
 hystrix.command.default.execution.isolation.thread.timeoutInMilliseconds: 190000
 eureka.client.eureka-server-read-timeout-seconds: 5450
 eureka.client.eureka-server-connect-timeout-seconds: 5450
-config:
-  oauth2:
-    resourceURI: http://localhost:8081/leagues/user
 
-
+logging:
+  level:
+    org.springframework.security: DEBUG
+    org.springframework.cloud.netflix.zuul: INFO
+    com.makeurpicks: DEBUG
+    com.netflix.hystrix: DEBUG
+    
 zuul:
   routes:
     league:
@@ -40,7 +32,7 @@ zuul:
       stripPrefix: false
     season:
       path: /seasons/**
-      serviceId: season
+      serviceId: league
       stripPrefix: false
     team:
       path: /teams/**
@@ -53,12 +45,67 @@ zuul:
     game:
       path: /games/**
       stripPrefix: false
+    auth:
+      path: /auth/players/**
+      stripPrefix: false
 #    player:
 #      path: /register/auth/players/**
 #      stripPrefix: true
-logging:
-  level:
-    org.springframework.security: DEBUG
-    org.springframework.cloud.netflix.zuul: INFO
-    com.makeurpicks: DEBUG
-    com.netflix.hystrix: DEBUG
+    
+#spring:
+#  application:
+#   name: admin
+#  profiles:
+#    active: local    
+#
+#server:
+#  port: 9000
+#  context-path: /admin
+##  tomcat:
+##    remote_ip_header: x-forwarded-for
+##    protocol_header: x-forwarded-proto
+#
+#security:
+#  oauth2:
+#    client:
+#      logout-uri: http://localhost:9999/auth/logout
+#
+#hystrix.command.default.execution.isolation.thread.timeoutInMilliseconds: 190000
+#eureka.client.eureka-server-read-timeout-seconds: 5450
+#eureka.client.eureka-server-connect-timeout-seconds: 5450
+#
+#zuul:
+#  routes:
+#    league:
+#      path: /leagues/**
+#      stripPrefix: false
+#    pick:
+#      path: /picks/**
+#      stripPrefix: false
+#    season:
+#      path: /seasons/**
+#      serviceId: season
+#      stripPrefix: false
+#    team:
+#      path: /teams/**
+#      serviceId: game
+#      stripPrefix: false
+#    week:
+#      path: /weeks/**
+#      stripPrefix: false
+#      serviceId: game
+#    game:
+#      path: /games/**
+#      stripPrefix: false
+#    auth:
+#      path: /auth/players/**
+#      stripPrefix: false
+##    player:
+##      path: /register/auth/players/**
+##      stripPrefix: true
+#logging:
+#  level:
+#    org.springframework.security: DEBUG
+#    org.springframework.cloud.netflix.zuul: INFO
+#    com.makeurpicks: DEBUG
+#    com.netflix.hystrix: DEBUG

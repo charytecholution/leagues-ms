@@ -1,10 +1,19 @@
 #  address: 127.0.0.1
+
 spring:
-  application:
-   name: league
+  cloud:
+    stream:
+      bindings:
+        output:
+          destination: leaguedata
+          content-type: application/json
+          producer:
+            partition-count: 3
+            partition-key-extractor-class: com.makeurpicks.message.service.PartitionkeyExtractorImp
+            partition-selector-class: com.makeurpicks.message.service.PartionkeySelectorStrategyImp
+
 encrypt:
   key: ${ENCRYPT_KEY:defaultkey} 
-  
 #  cloud:
 #    config:
 #      uri: ${vcap.services.config-service.credentials.uri:http://127.0.0.1:8888}
@@ -36,9 +45,9 @@ encrypt:
 #    leaseRenewalIntervalInSeconds: 10
 #    metadataMap:
 #      instanceId: league
-logging:
-  level:
-    org.springframework.security: DEBUG
-    org.springframework.cloud.netflix.zuul: INFO
-    com.makeurpicks: DEBUG
-    com.netflix.hystrix: DEBUG
+#logging:
+#  level:
+#    org.springframework.security: DEBUG
+#    org.springframework.cloud.netflix.zuul: INFO
+#    com.makeurpicks: DEBUG
+#    com.netflix.hystrix: DEBUG

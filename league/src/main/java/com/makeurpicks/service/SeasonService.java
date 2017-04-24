@@ -12,13 +12,20 @@ import org.springframework.stereotype.Component;
 
 import com.makeurpicks.domain.LeagueType;
 import com.makeurpicks.domain.Season;
+import com.makeurpicks.exception.LeagueValidationException;
+import com.makeurpicks.exception.LeagueValidationException.LeagueExceptions;
 import com.makeurpicks.repository.SeasonRepository;
 
 @Component
 public class SeasonService {
 	
-	@Autowired 
 	private SeasonRepository seasonRepository;
+
+	@Autowired
+	public SeasonService(SeasonRepository seasonRepository) {
+		this.seasonRepository=seasonRepository;
+		
+	}
 	
 	Log logs =  LogFactory.getLog(SeasonService.class);
 	
@@ -45,23 +52,46 @@ public class SeasonService {
 		return s;
 	}
 	
+	public List<Season> getSeasonsByLeague(String league)
+	{
+		return seasonRepository.getSeasonsByLeagueType(league);
+	}
+	
 	public Season createSeason(Season season)
 	{
 	
 		String id = UUID.randomUUID().toString();
 		
 		season.setId(id);
-		
+//		this.channel.send(MessageBuilder.withPayload(season).build());
+		System.out.println(season.getClass().getSimpleName()); 
+//		writer.write(season);
 		return seasonRepository.save(season);
+	//	return season;
 	}
 	
 	public Season updateSeason(Season season)
 	{
-		return seasonRepository.save(season);
+		Season seasonValue = seasonRepository.findOne(season.getId());
+		if (seasonValue == null)
+			throw new LeagueValidationException(LeagueExceptions.SEASON_NOT_FOUND);
+		seasonRepository.save(season);
+		return season;
 	}
 	
 	public void deleteSeason(String seasonId)
 	{
+		Season seasonValue = seasonRepository.findOne(seasonId);
+		if (seasonValue == null)
+			throw new LeagueValidationException(LeagueExceptions.SEASON_NOT_FOUND);
 		seasonRepository.delete(seasonId);
+	}
+
+	public Season getSeasonById(String id) {
+		return seasonRepository.findOne(id);
+	}
+
+	public List<Season> getSeasonsByLeagueType(String leagueType) {
+		return seasonRepository.findByLeagueType(leagueType);
 	}
 }

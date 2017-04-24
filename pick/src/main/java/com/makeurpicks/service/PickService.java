@@ -55,7 +55,6 @@ public class PickService {
 //		
 //		//save pick by pick id
 		pickRepository.save(pick);
-	
 		picksByWeekRepository.createPick(pick);
 		return pick;
 	}

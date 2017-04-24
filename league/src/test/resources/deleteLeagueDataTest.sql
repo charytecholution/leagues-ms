@@ -1,0 +1,1 @@
+delete from league where id=1;

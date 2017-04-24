@@ -1,0 +1,33 @@
+spring:
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5Dialect
+  datasource:
+    url: jdbc:mysql://auth-db:3306/player
+    username: dbuser
+    password: password
+    driver-class-name: com.mysql.jdbc.Driver   
+
+
+config:
+   oauth2:
+        ui-uri: http://admin:8080/
+        admin-uri: http://admin:9000/admin/
+        admin-ssluri: https://admin:9000/admin/
+
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka:8761/eureka/
+  instance:
+#    preferIpAddress: true
+    status-page-url: http://delesio.com:9999/auth/info
+    health-check-url: http://delesio.com:9999/auth/health
+    home-page-url: http://delesio.com:9999/auth     
+ 
+         

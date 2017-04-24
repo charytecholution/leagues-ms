@@ -13,6 +13,7 @@
 		<groupId>com.makeurpicks</groupId>
 		<artifactId>build</artifactId>
 		<version>0.0.1</version>
+		<relativePath>../build</relativePath>
 	</parent>
 
 	<properties>
@@ -63,12 +64,12 @@
 			<artifactId>mysql-connector-java</artifactId>
 <!-- 			<version>5.1.6</version> -->
 		</dependency>
-		<dependency>
+<!-- 		<dependency>
 	       <groupId>org.hibernate</groupId>
 	       <artifactId>hibernate-c3p0</artifactId>
 	       <version>3.6.3.Final</version>
 	   </dependency>
-
+ -->
 		
 		<!-- test -->
 		<dependency>
@@ -123,16 +124,38 @@
 			<groupId>com.fasterxml.jackson.datatype</groupId>
 			<artifactId>jackson-datatype-jsr310</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.scala-lang</groupId>
-			<artifactId>scala-library</artifactId>
-			<version>2.11.0</version>
-		</dependency>
-		<dependency>
+		
+		<!-- <dependency>
 			<groupId>org.jboss</groupId>
 			<artifactId>jboss-common-core</artifactId>
 			<version>2.2.10.GA</version>
 		</dependency>
+		
+		MYP-104 Look into getting MYP running in Docker
+		<dependency>
+			<groupId>org.jboss</groupId>
+			<artifactId>jboss-common-core</artifactId>
+			<version>2.2.10.GA</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.jboss.logging</groupId>
+					<artifactId>jboss-logging-spi</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency> -->
+		
+		<dependency>
+		 <groupId>javax.validation</groupId>
+   		 <artifactId>validation-api</artifactId>
+    	 <version>1.1.0.Final</version>
+ 	   </dependency>
+ 	   
+ 	   <!--  <dependency>
+ 	    	<groupId>com.fasterxml</groupId>
+		    <artifactId>classmate</artifactId>
+    		<version>1.0.0</version>
+ 	    </dependency> -->
+ 	   
 	</dependencies>
 
 	
@@ -142,6 +165,15 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>com.spotify</groupId>
+				<artifactId>docker-maven-plugin</artifactId>
+				<version>0.4.13</version>
+				<configuration>
+				    <skipDockerBuild>false</skipDockerBuild>
+				    <skipDockerPush>false</skipDockerPush>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>

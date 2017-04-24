@@ -1,0 +1,17 @@
+version: "2"
+
+services:
+  auth:
+    image: nexus.techolution.com:8123/myp/auth-server
+    networks:
+      - myp-network
+    ports:
+      - "9999:9999"
+    expose:
+      - "9999"
+#    restart: always      
+    links:
+      - auth-db:auth-db
+    depends_on:
+      - auth-db
+      - eureka

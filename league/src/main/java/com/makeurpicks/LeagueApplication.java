@@ -1,27 +1,54 @@
 package com.makeurpicks;
 
+import java.util.Calendar;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.cloud.stream.annotation.EnableBinding;
+import org.springframework.cloud.stream.binder.PartitionKeyExtractorStrategy;
+import org.springframework.cloud.stream.binder.PartitionSelectorStrategy;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.integration.annotation.IntegrationComponentScan;
+import org.springframework.messaging.Message;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 
+import com.makeurpicks.domain.League;
+import com.makeurpicks.domain.LeagueBuilder;
+import com.makeurpicks.domain.LeagueType;
+import com.makeurpicks.domain.PlayerLeague;
+import com.makeurpicks.domain.Season;
+import com.makeurpicks.domain.SeasonBuilder;
+import com.makeurpicks.message.channels.SqlChannels;
+import com.makeurpicks.service.LeagueService;
+import com.makeurpicks.service.SeasonService;
+
+
+//@EnableResourceServer
+@IntegrationComponentScan
+@EnableBinding(SqlChannels.class)
 @SpringBootApplication
 @EnableEurekaClient
-//@EnableResourceServer
 @EnableJpaRepositories
-public class LeagueApplication {
+public class LeagueApplication implements CommandLineRunner {
+	
+	@Autowired
+	private SeasonService seasonService;
+	
+	@Autowired
+	private LeagueService leagueService;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(LeagueApplication.class, args);
 	}
 
+	
 //	@Configuration
 //    @EnableWebSecurity
 //    @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -36,6 +63,35 @@ public class LeagueApplication {
             ;
         }
     }
+  
+    @Override
+	public void run(String... arg0) throws Exception {
+//		PlayerBuilder playerBuilder = new PlayerBuilder("admin", "admin@techolution.com", "admin");
+//		playerBuilder.adAdmin();
+//		Player admin =playerBuilder.build();
+//		playerServices.createPlayer(admin);
+    	
+    	
+    	Season season = new SeasonBuilder().withStartYear(2017).withEndYear(2018).withLeagueType(LeagueType.pickem).build();
+    	seasonService.createSeason(season);
+    	
+    	League league = new LeagueBuilder()
+    			.withAdminId("admin")
+    			.withName("Sample League")
+    			.withPassword("password")
+    			.withSeasonId(season.getId())
+    			.build();
+    	
+    	league = leagueService.createLeague(league);
+    	
+    	leagueService.joinLeague(league, "player1");
+    	leagueService.joinLeague(league, "player2");
+    	leagueService.joinLeague(league, "player3");
+    	leagueService.joinLeague(league, "player4");
+    	leagueService.joinLeague(league, "player5");
+		
+	}
+
 	/*@Autowired
 	LeagueService leagueService;
 	@Bean 

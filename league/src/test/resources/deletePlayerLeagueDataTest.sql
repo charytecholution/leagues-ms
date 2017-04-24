@@ -1,0 +1,1 @@
+delete from player_league where league_id=1;

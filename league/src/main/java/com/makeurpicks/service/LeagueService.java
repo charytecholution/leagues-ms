@@ -3,6 +3,7 @@ package com.makeurpicks.service;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -30,8 +31,8 @@ public class LeagueService {
 	}
 	public League createLeague(League league) throws LeagueValidationException {
 		validateLeague(league);
-		/*String id = UUID.randomUUID().toString();
-		league.set(id);*/
+		String id = UUID.randomUUID().toString();
+		league.setId(id);
 		leagueRepository.save(league);
 		addPlayerToLeague(league, league.getAdminId());
 		return league;
@@ -60,6 +61,16 @@ public class LeagueService {
 		
 	}
 
+	public void joinLeague(League league, String playerId)
+	{
+		joinLeague(league.getId(), playerId, league.getPassword());
+		
+//		PlayerLeagueId playerLeagueId = new PlayerLeagueId(league.getId(), playerId);
+//		PlayerLeague playerLeague = new PlayerLeague(playerLeagueId);
+//		playerLeague.setLeagueName(league.getLeagueName());
+//		joinLeague(playerLeague);
+	}
+	
 	public void joinLeague(PlayerLeague playerLeague)
 	{
 		if (playerLeague.getLeagueId() == null)
@@ -116,6 +127,7 @@ public class LeagueService {
 	public League getLeagueByName(String leagueName) {
 		return leagueRepository.findByLeagueName(leagueName);
 	}
+
 
 	/*public League getLeagueByName(String name) {
 		Iterable<League> leagues = leagueRepository.findAll();
@@ -219,6 +231,8 @@ public class LeagueService {
 		
 		leagueRepository.delete(leagueId);
 	}
-	
+	public List<League> getLeagueBySeasonId(String seasonId) {
+		return leagueRepository.findBySeasonId(seasonId);
+	}
 	
 }
