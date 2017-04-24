@@ -73,17 +73,8 @@ public class GatewayApplication {
     public OAuth2RestOperations securerestTemplate() {
         return new OAuth2RestTemplate(oAuth2ProtectedResourceDetails, oAuth2ClientContext);
     }
-    /*@Bean(value = "oauth2RestOperationsTemplate")
-    @LoadBalanced
-    public OAuth2RestOperations oauth2RestOperationsTemplate() {
-        BaseOAuth2ProtectedResourceDetails baseOAuth2ProtectedResourceDetails = new BaseOAuth2ProtectedResourceDetails();
-        //  baseOAuth2ProtectedResourceDetails.setClientId("confidential");
-        baseOAuth2ProtectedResourceDetails.setClientId("trusted");
-        baseOAuth2ProtectedResourceDetails.setClientSecret("secret");
-        baseOAuth2ProtectedResourceDetails.setGrantType("password");
-        return new OAuth2RestTemplate(baseOAuth2ProtectedResourceDetails);
-    }
-    */
+  
+
 
     @Bean
     public FilterRegistrationBean corsFilter() {
@@ -98,9 +89,13 @@ public class GatewayApplication {
         bean.setOrder(Ordered.HIGHEST_PRECEDENCE);
         return bean;
     }
+	
+	
+	
 
-    @Configuration
-    @EnableOAuth2Sso
+	
+	@Configuration
+	@EnableOAuth2Sso 
     protected static class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
         @Override

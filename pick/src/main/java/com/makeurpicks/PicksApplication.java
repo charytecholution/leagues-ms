@@ -26,6 +26,22 @@ import org.springframework.web.client.RestTemplate;
 @EnableCircuitBreaker
 @EnableResourceServer
 public class PicksApplication {
+	
+	
+	@LoadBalanced
+	@Bean(name={"loadBalancedRestTemplate"})
+	RestTemplate restTemplate() {
+		return new RestTemplate();
+	}
+	@Autowired
+	AuthorizationCodeResourceDetails oAuth2ProtectedResourceDetails;
+	@Autowired
+	OAuth2ClientContext oAuth2ClientContext;
+	@LoadBalanced
+	@Bean
+	public OAuth2RestOperations securerestTemplate() {
+		return new OAuth2RestTemplate(oAuth2ProtectedResourceDetails, oAuth2ClientContext);
+	}
 
     public static void main(String[] args) {
         SpringApplication.run(PicksApplication.class, args);

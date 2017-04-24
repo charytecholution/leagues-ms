@@ -89,8 +89,10 @@ public class PickService {
 	
 	public Map<String, Pick>getPicksByWeekAndPlayer(String leagueId, String weekId, String playerId)
 	{
-		Map<String, Map<String, String>> map = picksByWeekRepository.findPlayersByWeek(leagueId, weekId);
-		return getPicksByWeekAndPlayer(map, weekId, playerId);
+		//Map<String, Map<String, String>> map = picksByWeekRepository.findPlayersByWeek(leagueId, weekId);
+		//Map<String, Map<String, String>> map = pickRepository.
+		List<Pick> picksForPlayerAndWeek=pickRepository.findByLeagueIdAndWeekIdAndPlayerId(leagueId, weekId, playerId);
+		return getPicksByWeekAndPlayerAndLeague(picksForPlayerAndWeek);
 	}
 	
 	public Map<String, Pick> getOtherPicksByWeekAndPlayer(String leagueId, String weekId, String playerId)
@@ -103,21 +105,40 @@ public class PickService {
 		return picks;
 	}
 	
-	private Map<String, Pick>getPicksByWeekAndPlayer(Map<String, Map<String, String>> map, String weekId, String playerId)
+	private Map<String, Pick>getPicksByWeekAndPlayerAndLeague(List<Pick> picksForPlayerAndWeek)
 	{
 //		Map<String, Map<String, String>> map = picksByWeekRepository.getPlayersByWeek(weekId);
-		if (map==null || map.isEmpty())
+		if (picksForPlayerAndWeek==null || picksForPlayerAndWeek.isEmpty())
 			return Collections.emptyMap();
-		Map<String, String> games = map.get(playerId);
-		Set<String> subkeys = new TreeSet<>();
+		//Map<String, String> games = map.get(playerId);
+		/*Set<String> subkeys = new TreeSet<>();
 		if (games != null)
 			subkeys = games.keySet();
-		
+*/		
 		Map<String, Pick> pickMap = new HashMap<>();
-		for (String gameId : subkeys) {
-			String pickId = games.get(gameId);
-			Pick pick = pickRepository.findOne(pickId);
-			pickMap.put(gameId, pick);
+		for (Pick pick : picksForPlayerAndWeek) {
+			//String pickId = games.get(gameId);
+			//Pick pick = pickRepository.findOne(pickId);
+			pickMap.put(pick.getGameId(), pick);
+		}
+		return pickMap;
+		
+	}
+	
+	private Map<String, Map<String, Pick>>getPicksByAllPlayesForWeek(List<Pick> picksForPlayerAndWeek)
+	{
+
+		if (picksForPlayerAndWeek==null || picksForPlayerAndWeek.isEmpty())
+			return Collections.emptyMap();
+		Map<String, Map<String, Pick>> pickMap = new HashMap<>();
+		Map<String, Pick> gameMap = new HashMap<>();
+		for (Pick pick : picksForPlayerAndWeek) {
+			Map<String, Pick> gameMapForPlayer = pickMap.get(pick.getPlayerId());
+			if(gameMapForPlayer == null){
+				gameMapForPlayer=new HashMap<String,Pick>();	
+			}
+			gameMapForPlayer.put(pick.getGameId(), pick);
+			pickMap.put(pick.getPlayerId(), gameMapForPlayer);
 		}
 		return pickMap;
 		
@@ -127,7 +148,10 @@ public class PickService {
 	
 	public Map<String, Map<String, Pick>>getPicksByWeek(String leagueId, String weekId)
 	{
-		Map<String, Map<String, String>> map = picksByWeekRepository.findPlayersByWeek(leagueId, weekId);
+		//Map<String, Map<String, String>> map = picksByWeekRepository.findPlayersByWeek(leagueId, weekId);
+		List<Pick> picks=pickRepository.findByLeagueIdAndWeekId(leagueId, weekId);
+		Map<String, Map<String, Pick>> gameMap = new HashMap<>();
+		/*return getPicksByAllPlayesForWeek(picks);
 		if (map==null)
 			return Collections.emptyMap();
 		
@@ -141,8 +165,8 @@ public class PickService {
 			gameMap.put(playerId, pickMap);
 			
 		}
-		
-		
+		*/
+		gameMap=getPicksByAllPlayesForWeek(picks);
 		return gameMap;
 	}
 	

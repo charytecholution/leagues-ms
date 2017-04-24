@@ -8,14 +8,14 @@ spring:
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL5Dialect
   datasource:
-    url: jdbc:mysql://${MYSQL_PORT_3306_TCP_ADDR:league-db}:${MYSQL_PORT_3306_TCP_PORT:3306}/${MYSQL_ENV_MYSQL_DATABASE:league}
-    username: ${MYSQL_USER:dbuser}
-    password: ${MYSQL_PASSWORD:password}
+    url: jdbc:mysql://league-db:3306/league
+    username: dbuser
+    password: password
     driver-class-name: com.mysql.jdbc.Driver 
     dbcp:
       max-active:  5

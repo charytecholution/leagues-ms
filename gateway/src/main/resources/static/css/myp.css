@@ -253,6 +253,12 @@ div.opponent:hover	{
 
 .pick-selection-icon .not_pick {
 	visibility: hidden;	
+	
+}
+
+/*MYP67*/
+.no_selection_allowed {
+	background-color: #808080
 }
 
 .won .pick-selection-icon { 

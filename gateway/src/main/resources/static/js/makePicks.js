@@ -92,8 +92,10 @@
 				}
 				
 				//console.log('doublePickId='+doublePickId);
+				console.log('gameId='+scope.game.id+"  :cope.game.hasGameStarted:"+scope.game.hasGameStarted);
 				
-				var gamestatus, favstatus, dogstatus;
+				var gamestatus, favstatus, dogstatus, selectionstatus,totalPointsTemp;
+				totalPointsTemp=0;
 				
 				//has game started?
 				if (scope.game.hasGameStarted) {
@@ -129,25 +131,49 @@
 					//has game ended?
 					if (scope.game.hasScoresEntered) {
 						//game is over
-						
+						console.log('in scope.game.hasScoresEntered:'+pickedTeamIdForGame);
+						 console.log('Game data is:'+JSON.stringify(scope.game));
+						if(pickedTeamIdForGame == 'nil'){
+							//dogId=scope.game.gameWinner;
+							//dogId=scope.game.
+							pickedTeamIdForGame=dogId;
+							var favScoreTemp=scope.game.favScore;
+							var dogScoreTemp=scope.game.dogScore;
+							
+							console.log('favScoreTemp data is:'+favScoreTemp+':dogScoreTemp:'+dogScoreTemp);
+							if(favScoreTemp<dogScoreTemp){
+								favstatus = "pick";
+								gamestatus = "loss";
+								//dogstatus = "not_pick";
+							}else if(dogScoreTemp<favScoreTemp){
+								dogstatus = "pick";
+								gamestatus = "loss";
+							}
+							
+							
+						}
 						//is picked team the winner?
-						if (pickedTeamIdForGame === teamIdForGameWinner) {
+						else if (pickedTeamIdForGame === teamIdForGameWinner) {
 							//is double pick?
 							if (doublePickId === pickIdForGame) {
 								//team is winner and is double
 								gamestatus = "double_won";
+								totalPointsTemp=totalPointsTemp+2;
 							} else {
 								//team is winner
 								gamestatus = "won";
+								totalPointsTemp=totalPointsTemp+1;
 							}
 						} else {
 							if (doublePickId === pickIdForGame) {
 								//team is loser and dobule
 								gamestatus = "double_loss";
+								totalPointsTemp=totalPointsTemp-2;
 								
 							} else {
 								//team is loser
 								gamestatus = "loss";
+								totalPointsTemp=totalPointsTemp-1;
 							}
 						}
 							
@@ -175,10 +201,12 @@
 							dogstatus = "not_pick";
 						}
 					}
-				
+					//MYP67
+					selectionstatus="no_selection_allowed";
 					
 				} else {
 					//game has not started
+					console.log("Before setting status for non started game:"+scope.game.id);
 					
 					//has pick been made for game?
 					if (pickMadeForGame) {
@@ -257,8 +285,10 @@
 				//scope.addgamestatus(scope.game.id, gamestatus);
 				scope.status.teamstatus[favId] = favstatus;
 				scope.status.teamstatus[dogId] = dogstatus;
-				
-//				console.log('favId='+favId+' dogId='+dogId+' pickedTeam='+pickedTeamIdForGame+' gameWinner='+teamIdForGameWinner+' gamestatus='+scope.status.gamestatus[scope.game.id]+' favstatus='+scope.status.teamstatus[favId]+' dogstatus='+scope.status.teamstatus[dogId]);
+				//MYP67
+				scope.status.selectionStatus[scope.game.id] = selectionstatus;
+				scope.totalPoints=scope.totalPoints+totalPointsTemp;
+				//console.log('favId='+favId+' dogId='+dogId+' pickedTeam='+pickedTeamIdForGame+' gameWinner='+teamIdForGameWinner+' gamestatus='+scope.status.gamestatus[scope.game.id]+' favstatus='+scope.status.teamstatus[favId]+' dogstatus='+scope.status.teamstatus[dogId]+' selectionStatus '+scope.status.selectionStatus[scope.game.id]);
 
 			}
 		  }
@@ -271,12 +301,33 @@
 		$scope.status = {};
 		$scope.status.gamestatus = {};
 		$scope.status.teamstatus = {};
+		$scope.status.selectionStatus = {};
+		$scope.totalPoints=0;
 
 //		makePickPageService.getPage().then(function(data) {
+		//console.log('leagueid:'+$rootScope.leagueId+':weekid:'+$rootScope.weekId);
 		leagueService.loadHeader().then(function (data) {
 			$http.get('/makepicks/leagueid/'+$rootScope.leagueId+'/weekid/'+$rootScope.weekId).success(function(data) {	
-				$log.debug('MakePickController:loadMakePicks='+JSON.stringify(data))
+				console.log('MakePickController:loadMakePick.game data is='+JSON.stringify(data));
 				$scope.page = data;
+				/*console.log('Before calling pick data');
+					$http.get('/picks/self/leagueid/'+$rootScope.leagueId+'/weekid/'+$rootScope.weekId).success(function(data) {	
+						$log.debug('MakePickController:loadMakePicks.Pick data is='+JSON.stringify(data))
+						
+						$scope.page.picks=data;
+							
+						
+					})
+					
+					$http.get('/picks/double/leagueid/'+$rootScope.leagueId+'/weekid/'+$rootScope.weekId).success(function(data) {	
+						$log.debug('MakePickController:loadMakePicks.double pick data='+JSON.stringify(data))
+						
+						//$scope.page.picks=data;
+						$scope.page.doublePick=data;
+							
+						
+					})*/
+				
 			})
 		});
 //			,
@@ -296,7 +347,7 @@
 			
 			$http.get('/makepicks/leagueid/'+$rootScope.leagueId+'/weekid/'+$rootScope.weekId)
 	        .success(function(data) {
-//	        	$log.debug('MakePicksController:changeWeek='+JSON.stringify(data))
+	        	$log.debug('MakePicksController:changeWeek.Game data is='+JSON.stringify(data))
 	        	$scope.page = data;
 	        	
 	        	var arrayLength = data.games.length;
@@ -305,7 +356,24 @@
 	        		makePickPageService.loadStatus($scope);
 	        	    }
 	        	
-	        	
+	        	$scope.page = data;
+				/*console.log('Before calling pick data in weekchanged');
+					$http.get('/picks/self/leagueid/'+$rootScope.leagueId+'/weekid/'+$rootScope.weekId).success(function(data) {	
+						$log.debug('MakePickController:loadMakePicks.pick data='+JSON.stringify(data))
+						
+						$scope.page.picks=data;
+							
+						
+					})
+					
+					$http.get('/picks/double/leagueid/'+$rootScope.leagueId+'/weekid/'+$rootScope.weekId).success(function(data) {	
+						$log.debug('MakePickController:loadMakePicks.double pick data is='+JSON.stringify(data))
+						
+						//$scope.page.picks=data;
+						$scope.page.doublePick=data;
+							
+						
+					})*/
 	        });
 		});
 		
@@ -328,7 +396,11 @@
 				local_model.teamId = teamid;
 				local_model.gameId = gameid;
 				local_model.weekId = $scope.week.weekId;
-				local_model.leagueId = $scope.league.leagueId;
+
+				local_model.leagueId = $scope.league.id;
+				if(local_model.leagueId == null || local_model.leagueId  == ''){
+					local_model.leagueId =$rootScope.leagueId;
+				}
 				
 				var doubleSubmission = false;
 				var url = '/picks/';
