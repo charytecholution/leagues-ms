@@ -1,8 +1,8 @@
 security:
   oauth2:
     client:
-      access-token-uri: http://auth.delesio.com:9999/auth/oauth/token
-      user-authorization-uri: http://auth.delesio.com:9999/auth/oauth/authorize
+      access-token-uri: http://54.190.54.132:8090/auth/oauth/token
+      user-authorization-uri: http://54.190.54.132:8090/auth/oauth/authorize
       client-id: ui
       client-secret: secret
     resource:

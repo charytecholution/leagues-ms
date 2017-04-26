@@ -122,22 +122,22 @@ services:
       - game
     restart: on-failure:3
 
-#  gateway:
-#    image: gatewayserver
-#    networks:
-#      - myp-network
-#    ports:
-#      - "8080:8080"
-#    expose:
-#      - "8080"
-#    links:
-#      - eureka:eureka
-#      - auth:auth
-#      - config-server:config-server
-#    depends_on:
-#      - eureka
-#      - auth
-#      - config-server
-#      - league
-#      - game
-#    restart: on-failure:3
+  gateway:
+    image: gatewayserver
+    networks:
+      - myp-network
+    ports:
+      - "8080:8080"
+    expose:
+      - "8080"
+    links:
+      - eureka:eureka
+      - auth:auth
+      - config-server:config-server
+    depends_on:
+      - eureka
+      - auth
+      - config-server
+      - league
+      - game
+    restart: on-failure:3
