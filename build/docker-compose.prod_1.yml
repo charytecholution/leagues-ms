@@ -102,25 +102,25 @@ services:
 #      - config-server
 #      - pick-db
 #      - redis
-#  admin:
-#    image: adminserver
-#    networks:
-#      - myp-network
-#    ports:
-#      - "9000:9000"
-#    expose:
-#      - "9000"
-#    links:
-#      - eureka:eureka
-#      - auth:auth
-#      - config-server:config-server
-#    depends_on:
-#      - eureka
-#      - auth
-#      - config-server
-#      - league
-#      - game
-#    restart: on-failure:3
+  admin:
+    image: adminserver
+    networks:
+      - myp-network
+    ports:
+      - "9000:9000"
+    expose:
+      - "9000"
+    links:
+      - eureka:eureka
+      - auth:auth
+      - config-server:config-server
+    depends_on:
+      - eureka
+      - auth
+      - config-server
+      - league
+      - game
+    restart: on-failure:3
 
 #  gateway:
 #    image: gatewayserver
