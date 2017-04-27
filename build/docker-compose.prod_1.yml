@@ -81,27 +81,27 @@ services:
       - auth
       - config-server
       - game-db
-  pick:
-    image: pickserver
-    networks:
-      - myp-network
-    ports:
-      - "8083:8083"
-    expose:
-      - "8083"
-    restart: on-failure:3
-    links:
-      - eureka:eureka
-      - auth:auth
-      - config-server:config-server
-      - pick-db:pick-db
-      - redis:redis
-    depends_on:
-      - eureka
-      - auth
-      - config-server
-      - pick-db
-      - redis
+#  pick:
+#    image: pickserver
+#    networks:
+#      - myp-network
+#    ports:
+#      - "8083:8083"
+#    expose:
+#      - "8083"
+#    restart: on-failure:3
+#    links:
+#      - eureka:eureka
+#      - auth:auth
+#      - config-server:config-server
+#      - pick-db:pick-db
+#      - redis:redis
+#    depends_on:
+#      - eureka
+#      - auth
+#      - config-server
+#      - pick-db
+#      - redis
   admin:
     image: adminserver
     networks:
