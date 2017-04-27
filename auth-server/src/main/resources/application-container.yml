@@ -15,9 +15,10 @@ spring:
 
 config:
    oauth2:
-        ui-uri: http://admin:8080/
-        admin-uri: http://admin:9000/admin/
-        admin-ssluri: https://admin:9000/admin/
+        ui-uri: http://34.209.187.83/
+        admin-uri: http://34.209.187.83/admin/
+        admin-ssluri: http://34.209.187.83/admin/
+        localadmin-uri: http://34.209.187.83/admin/
 
 
 eureka:
