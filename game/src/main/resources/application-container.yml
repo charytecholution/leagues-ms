@@ -30,7 +30,7 @@ security:
   oauth2:
     resource:
       jwt:
-        key-uri: http://auth.delesio.com:9999/auth/oauth/token_key
+        key-uri: http://myp.techolution.com/auth/oauth/token_key
   basic:
     enabled: false
   user:

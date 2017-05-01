@@ -15,10 +15,9 @@ spring:
 
 config:
    oauth2:
-        ui-uri: http://34.209.187.83/
-        admin-uri: http://34.209.187.83/admin/
-        admin-ssluri: http://34.209.187.83/admin/
-        localadmin-uri: http://34.209.187.83/admin/
+        ui-uri: http://myp.techolution.com/
+        admin-uri: http://myp.techolution.com/admin/
+        admin-ssluri: http://myp.techolution.com/admin/
 
 
 eureka:

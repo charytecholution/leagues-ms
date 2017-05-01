@@ -2,10 +2,10 @@ security:
   oauth2:
     client:
       useCurrentUri: false
-      preEstablishedRedirectUri: http://34.209.187.83/admin/login
-      access-token-uri: http://34.209.187.83/auth/oauth/token
-      user-authorization-uri: http://34.209.187.83/auth/oauth/authorize
-      logout-uri: http://34.209.187.83/auth/logout
+      preEstablishedRedirectUri: http://myp.techolution.com/admin/login
+      access-token-uri: http://myp.techolution.com/auth/oauth/token
+      user-authorization-uri: http://myp.techolution.com/auth/oauth/authorize
+      logout-uri: http://myp.techolution.com/auth/logout
       client-id: confidential
       client-secret: secret
     resource:
