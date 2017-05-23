@@ -1,0 +1,6 @@
+node {
+    stage 'Build'
+        echo building the project
+    stage 'Exec Maven'
+        rtMaven.run pom: 'build/pom.xml', goals: 'clean install', buildInfo: buildInfo
+}
