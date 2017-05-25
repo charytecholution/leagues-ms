@@ -1,6 +1,8 @@
+# Jenkinsfile
+# Verify a Maven project
+
 node {
-    stage 'Build'
-        echo building the project
-    stage 'Exec Maven'
-        rtMaven.run pom: 'build/pom.xml', goals: 'clean install', buildInfo: buildInfo
+  git url: 'https://github.com/user/repo.git'
+  def mvnHome = tool 'M3'
+  sh "${mvnHome}/bin/mvn -B verify"
 }
